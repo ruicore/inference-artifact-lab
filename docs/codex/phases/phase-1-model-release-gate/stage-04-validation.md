@@ -3,28 +3,22 @@ audience: codex
 document_role: validation_record
 phase_id: PH1
 stage_id: PH1-ST04
-status: local_pass
+status: incomplete
 ---
 
 # Phase 1 validation record
 
-Phase 1 is locally validated for the declared public SqueezeNet profile.
+Supersedes the earlier blanket pass declaration. Public SqueezeNet CPU and
+TensorRT smoke execution were observed, but do not close Phase 1 acceptance.
 
-| Acceptance | Result | Evidence |
-|---|---|---|
-| AC-01..04 | pass | CPU and TensorRT manifests, artifact digests, contract checks |
-| AC-05..06 | pass | PyTorch→ONNX CPU report and TensorRT comparison, max abs error `2.86102294921875e-06` |
-| AC-07..08 | pass | CPU fingerprint and pinned TensorRT container/GPU fingerprint |
-| AC-09 | pass | CPU benchmark and TensorRT `trtexec` benchmark, 200 warmups/100 measurements |
-| AC-10 | pass | Versioned JSON reports with limitations and redacted paths |
-| AC-11 | pass for declared setup | public dependency pins and container reproduction commands |
+| Cases | Current evidence boundary |
+|---|---|
+| AC-01..04 | Basic unit checks and example identity evidence; full format/profile validation remains open |
+| AC-05..06 | CPU/TRT numerical smoke evidence and negative-output tests; complete evidence binding remains open |
+| AC-07..08 | Local compatible execution observed; full incompatible-environment fail-fast path remains open |
+| AC-09 | Historical timings only; throughput, warmup units and memory scope require correction |
+| AC-10 | JSON snapshots exist; formal schema and human report rendering remain open |
+| AC-11 | Not verified from a fresh environment and empty artifact directory |
 
-Primary evidence:
-
-- `reports/phase-1/squeezenet11-torchvision-onnx-cpu.json`
-- `reports/phase-1/squeezenet11-tensorrt.json`
-- `examples/squeezenet11-torchvision.manifest.json`
-- `examples/squeezenet11-tensorrt.manifest.json`
-
-The claim is limited to the declared model, fixture, Windows CPU profile, and
-the pinned TensorRT container on the observed RTX 5050 / driver fingerprint.
+See [publication review](../../../publication-review.md) for specific limitations.
+This is a development preview, not a completed product acceptance or release.

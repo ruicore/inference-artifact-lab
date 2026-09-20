@@ -91,7 +91,8 @@
   ],
   "limitations": [
     "Reference and target outputs currently use the same ONNX Runtime CPU adapter; cross-runtime equivalence is not verified.",
-    "TensorRT engine compatibility is not verified in this environment."
+    "TensorRT engine compatibility is not verified in this environment.",
+    "Historical development snapshot, not release approval. See docs/publication-review.md for benchmark and acceptance limitations."
   ],
   "manifest_digest": "1441b1ac9fe3d8313ea5e44e8ee8fe083c04422aa8feaa8fbd47d31a39d410f4",
   "schema_version": "1",

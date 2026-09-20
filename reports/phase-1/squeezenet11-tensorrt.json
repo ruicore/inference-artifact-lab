@@ -137,7 +137,9 @@
     "fixture_sha256": "3161e1f639bd8c78b14164b87c3fb0be8aeb821aa715fcc0cab2d93353242d89",
     "reference_output_sha256": "9b9e35c2d6a1191685178087ce91bd352fadcebc97af24cb7b88ecf75fec0f06"
   },
-  "limitations": [],
+  "limitations": [
+    "Historical development snapshot, not release approval. See docs/publication-review.md for benchmark and acceptance limitations."
+  ],
   "manifest_digest": "c15fcdb1f5e0fb23c669a8bfdcc4cb7dff493308dfa46b354ee1e280d7e5829f",
   "schema_version": "1",
   "status": "pass"

@@ -2,7 +2,7 @@
 audience: codex
 document_role: phase_index
 phase_id: PH1
-status: local_complete
+status: implementation_in_progress
 ---
 
 # Phase 1 - Model Release Gate
@@ -22,7 +22,5 @@ separate products.
 - [Stage 04 - reproducible delivery](stages/04-reproducible-delivery.md)
 - [Validation record](stage-04-validation.md)
 
-Current lifecycle: local release candidate. The declared CPU and TensorRT
-profiles have identity, contract, correctness, environment, and benchmark
-reports. Publication and support for undeclared environments remain outside
-this phase.
+Current lifecycle: development preview. Runtime smoke evidence exists; full
+acceptance remains open. See [publication review](../../../publication-review.md).

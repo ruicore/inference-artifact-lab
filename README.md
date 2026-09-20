@@ -11,9 +11,11 @@ beyond the declared validation evidence.
 
 ## Current status
 
-Product Phase 1 is locally complete for the declared Windows CPU and pinned
-TensorRT container profiles. The reports remain scoped to the public SqueezeNet
-fixture and do not claim compatibility with undeclared hardware or runtimes.
+Development preview: public SqueezeNet CPU and TensorRT smoke runs are recorded.
+Phase 1 acceptance remains incomplete; report delivery and clean reproduction
+need further work. See [publication review](docs/publication-review.md) for
+known limitations. The commands below are development examples, not a verified
+from-scratch reproduction procedure.
 
 ## Planned flow
 
