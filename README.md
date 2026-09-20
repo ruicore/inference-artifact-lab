@@ -11,8 +11,9 @@ beyond the declared validation evidence.
 
 ## Current status
 
-Product Phase 1, requirements approved for implementation. The implementation
-skeleton is present; gate behavior has not started.
+Product Phase 1, Stage 01 core is implemented and Stage 02 preparation is active.
+The full phase remains open until independent runtime equivalence and the declared
+TensorRT environment are verified.
 
 ## Planned flow
 
