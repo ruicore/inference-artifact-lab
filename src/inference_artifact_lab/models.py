@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import StrEnum
+import math
 from typing import Any, Mapping
 
 
@@ -21,6 +22,44 @@ class GateStatus(StrEnum):
 
 class ManifestError(ValueError):
     """Raised when a manifest is malformed or incomplete."""
+
+
+# These are the formats understood by the public P1 adapters and fixture
+# harness.  Rejecting arbitrary labels matters because ``format`` participates
+# in the release contract; a typo must not silently become a new format.
+SUPPORTED_ARTIFACT_FORMATS = frozenset({"fixture", "onnx", "tensorrt", "tensorrt-engine"})
+SUPPORTED_TENSOR_DTYPES = frozenset(
+    {
+        "bool",
+        "bfloat16",
+        "float16",
+        "float32",
+        "float64",
+        "int8",
+        "int16",
+        "int32",
+        "int64",
+        "uint8",
+        "uint16",
+        "uint32",
+        "uint64",
+        "string",
+        "tensor(bool)",
+        "tensor(bfloat16)",
+        "tensor(float16)",
+        "tensor(float)",
+        "tensor(double)",
+        "tensor(int8)",
+        "tensor(int16)",
+        "tensor(int32)",
+        "tensor(int64)",
+        "tensor(uint8)",
+        "tensor(uint16)",
+        "tensor(uint32)",
+        "tensor(uint64)",
+        "tensor(string)",
+    }
+)
 
 
 def _required_string(value: Any, field_name: str) -> str:
@@ -42,8 +81,14 @@ class ArtifactSpec:
 
     @classmethod
     def from_dict(cls, value: Mapping[str, Any]) -> "ArtifactSpec":
+        if not isinstance(value, Mapping):
+            raise ManifestError("artifact must be an object")
         path = _required_string(value.get("path"), "artifact.path")
         fmt = _required_string(value.get("format"), "artifact.format")
+        if fmt not in SUPPORTED_ARTIFACT_FORMATS:
+            raise ManifestError(
+                f"artifact.format must be one of {sorted(SUPPORTED_ARTIFACT_FORMATS)}"
+            )
         digest = _required_string(value.get("sha256"), "artifact.sha256").lower()
         if len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
             raise ManifestError("artifact.sha256 must be a 64-character hexadecimal digest")
@@ -77,14 +122,24 @@ class TensorSpec:
 
     @classmethod
     def from_dict(cls, value: Mapping[str, Any], field_name: str) -> "TensorSpec":
+        if not isinstance(value, Mapping):
+            raise ManifestError(f"{field_name} must be an object")
         name = _required_string(value.get("name"), f"{field_name}.name")
         dtype = _required_string(value.get("dtype"), f"{field_name}.dtype")
+        if dtype not in SUPPORTED_TENSOR_DTYPES:
+            raise ManifestError(
+                f"{field_name}.dtype must be a supported tensor dtype"
+            )
         shape_value = value.get("shape")
         if not isinstance(shape_value, list):
             raise ManifestError(f"{field_name}.shape must be a list")
         shape: list[int | str | None] = []
         for index, dimension in enumerate(shape_value):
             if dimension is None or isinstance(dimension, str):
+                if isinstance(dimension, str) and not dimension.strip():
+                    raise ManifestError(
+                        f"{field_name}.shape[{index}] must not be an empty dimension name"
+                    )
                 shape.append(dimension)
             elif isinstance(dimension, int) and not isinstance(dimension, bool) and dimension >= 0:
                 shape.append(dimension)
@@ -117,6 +172,8 @@ class Manifest:
         if not isinstance(value, Mapping):
             raise ManifestError("manifest must be a JSON object")
         schema = _required_string(value.get("schema_version"), "schema_version")
+        if schema != "1":
+            raise ManifestError("schema_version must be '1'")
         model = value.get("model")
         if not isinstance(model, Mapping):
             raise ManifestError("model must be an object")
@@ -155,8 +212,12 @@ class Manifest:
             raise ManifestError("contract.profiles must be unique")
         parsed_tolerances: dict[str, float] = {}
         for name, tolerance in tolerances.items():
+            if not isinstance(name, str) or not name.strip():
+                raise ManifestError("tolerance names must be non-empty strings")
             if not isinstance(tolerance, (int, float)) or isinstance(tolerance, bool) or tolerance < 0:
                 raise ManifestError(f"tolerances.{name} must be a non-negative number")
+            if not math.isfinite(float(tolerance)):
+                raise ManifestError(f"tolerances.{name} must be finite")
             parsed_tolerances[str(name)] = float(tolerance)
         return cls(schema, model_name, model_version, source, ArtifactSpec.from_dict(artifact_value), inputs, outputs, dict(runtime), parsed_tolerances, dict(environment), profiles)
 

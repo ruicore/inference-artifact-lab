@@ -32,6 +32,15 @@ def main() -> int:
     with torch.no_grad():
         reference = reference_model(tensor).numpy()
 
+    # Keep the exact public fixture and reference output available to the
+    # TensorRT container. They are generated artifacts and remain ignored by
+    # Git; the container evidence can hash and verify them before use.
+    args.artifact.parent.mkdir(parents=True, exist_ok=True)
+    fixture_path = args.artifact.parent / "squeezenet11-fixture.npy"
+    reference_path = args.artifact.parent / "squeezenet11-reference.npy"
+    np.save(fixture_path, tensor.numpy())
+    np.save(reference_path, reference)
+
     adapter = OnnxRuntimeAdapter(args.artifact, providers=["CPUExecutionProvider"])
     target = adapter.run({"data": tensor.numpy()})["output"]
     environment = {
@@ -52,7 +61,13 @@ def main() -> int:
         target_outputs=target,
         benchmark_call=lambda: adapter.run({"data": tensor.numpy()}),
     )
-    report = replace(report, limitations=("TensorRT engine compatibility is not verified in this environment.",))
+    report = replace(
+        report,
+        limitations=(
+            "TensorRT engine compatibility is not verified in this CPU environment; a separate pinned NVIDIA container run is required.",
+            "The benchmark peak memory scope is Python allocations only; native and GPU memory require separate TensorRT container evidence.",
+        ),
+    )
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report.to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(report.to_dict(), indent=2, sort_keys=True))

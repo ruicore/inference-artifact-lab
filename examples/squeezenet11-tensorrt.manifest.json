@@ -1,0 +1,47 @@
+{
+  "schema_version": "1",
+  "model": {
+    "name": "squeezenet-1.1",
+    "version": "torchvision-SqueezeNet1_1_Weights.IMAGENET1K_V1",
+    "source": "https://download.pytorch.org/models/squeezenet1_1-b8a52dc0.pth"
+  },
+  "artifact": {
+    "path": "../artifacts/squeezenet1.1-fp32.engine",
+    "format": "tensorrt-engine",
+    "sha256": "e37a73806f53212e9ef8918e35bd924d2657e07cdb9a70b6206c5efd8d40267a",
+    "size_bytes": 7298860,
+    "build_inputs": {
+      "onnx_sha256": "4ed9006c47bb1eb8521eed0f8b22aa49003a8013c8e4adf5db414f7c8e927534",
+      "precision": "fp32",
+      "workspace_mib": 512,
+      "tf32": false
+    },
+    "tools": {
+      "container": "nvcr.io/nvidia/tensorrt:25.02-py3",
+      "container_digest": "sha256:814325e2b8a653f354c30bbcf5ecc8d4c780cf878a88a320ae648fbfdd9dd82d",
+      "tensorrt": "10.8.0"
+    }
+  },
+  "contract": {
+    "inputs": [
+      {"name": "data", "dtype": "tensor(float)", "shape": [1, 3, 224, 224]}
+    ],
+    "outputs": [
+      {"name": "output", "dtype": "tensor(float)", "shape": [1, 1000]}
+    ]
+  },
+  "runtime": {
+    "reference": "torchvision",
+    "target": "tensorrt",
+    "precision": "fp32",
+    "transfer_scope": "device_only"
+  },
+  "tolerances": {"absolute": 0.0001, "relative": 0.001},
+  "environment": {
+    "container_digest": "sha256:814325e2b8a653f354c30bbcf5ecc8d4c780cf878a88a320ae648fbfdd9dd82d",
+    "tensorrt": "10.8.0",
+    "gpu_name": "NVIDIA GeForce RTX 5050",
+    "compute_capability": "12.0",
+    "cuda_driver": "595.79"
+  }
+}
