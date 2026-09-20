@@ -1,0 +1,33 @@
+import hashlib
+
+from inference_artifact_lab import GateStatus, Manifest
+from inference_artifact_lab.release import run_release_gate
+
+
+def test_release_gate_requires_runtime_and_benchmark_evidence(tmp_path) -> None:
+    artifact = tmp_path / "artifact.bin"
+    artifact.write_bytes(b"artifact")
+    manifest = Manifest.from_dict(
+        {
+            "schema_version": "1",
+            "model": {"name": "m", "version": "1", "source": "public"},
+            "artifact": {"path": str(artifact), "format": "fixture", "sha256": hashlib.sha256(artifact.read_bytes()).hexdigest()},
+            "contract": {
+                "inputs": [{"name": "x", "dtype": "float32", "shape": [1]}],
+                "outputs": [{"name": "y", "dtype": "float32", "shape": [1]}],
+            },
+            "tolerances": {"absolute": 0.01},
+            "environment": {"test": "local"},
+        }
+    )
+    common = {
+        "observed_contract": {
+            "inputs": [{"name": "x", "dtype": "float32", "shape": [1]}],
+            "outputs": [{"name": "y", "dtype": "float32", "shape": [1]}],
+        },
+        "observed_environment": {"test": "local"},
+    }
+    blocked = run_release_gate(manifest, **common)
+    assert blocked.status is GateStatus.BLOCKED
+    passed = run_release_gate(manifest, reference_outputs=[1.0], target_outputs=[1.0], benchmark_call=lambda: None, **common)
+    assert passed.status is GateStatus.PASS

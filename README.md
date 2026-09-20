@@ -27,4 +27,7 @@ public model
   -> machine-readable release report
 ```
 
-See [Product Requirements](docs/product-requirements.md), [Acceptance Contract](docs/acceptance-contract.md), and [Clean-room Record](docs/clean-room-record.md).
+The authoritative development documentation follows the same phase/stage model
+used by the other portfolio repositories. Start at the [Codex document index](docs/codex/README.md), then read the [product contract](docs/codex/product-contract.md) and [Phase 1 plan](docs/codex/phases/phase-1-model-release-gate/README.md).
+
+For the human-readable brief and clean-room record, see [Product Requirements](docs/product-requirements.md), [Acceptance Contract](docs/acceptance-contract.md), and [Clean-room Record](docs/clean-room-record.md).

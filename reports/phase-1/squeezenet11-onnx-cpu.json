@@ -1,0 +1,99 @@
+{
+  "artifact": {
+    "format": "onnx",
+    "path": "artifacts\\squeezenet1.1-7.onnx",
+    "sha256": "1eeff551a67ae8d565ca33b572fc4b66e3ef357b0eb2863bb9ff47a918cc4088",
+    "size_bytes": 4956208
+  },
+  "checks": [
+    {
+      "evidence": {
+        "path": "artifacts\\squeezenet1.1-7.onnx"
+      },
+      "id": "artifact.exists",
+      "message": "artifact file exists",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "observed": 4956208
+      },
+      "id": "artifact.size",
+      "message": "artifact size matches manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "sha256": "1eeff551a67ae8d565ca33b572fc4b66e3ef357b0eb2863bb9ff47a918cc4088"
+      },
+      "id": "artifact.sha256",
+      "message": "artifact SHA-256 matches manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "count": 1
+      },
+      "id": "contract.inputs",
+      "message": "artifact inputs match manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "count": 1
+      },
+      "id": "contract.outputs",
+      "message": "artifact outputs match manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "observed": {
+          "machine": "AMD64",
+          "onnxruntime": "1.30.0",
+          "provider": "CPUExecutionProvider",
+          "python": "3.11.5",
+          "system": "Windows"
+        }
+      },
+      "id": "environment.compatibility",
+      "message": "observed environment satisfies manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "compared_values": 1000,
+        "max_absolute_error": 0.0
+      },
+      "id": "runtime.equivalence",
+      "message": "target output is within declared tolerance",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "latency_max_seconds": 0.0014497999982268084,
+        "latency_min_seconds": 0.0012682000015047379,
+        "latency_seconds": [
+          0.0014497999982268084,
+          0.0013658999996550847,
+          0.0014350999990710989,
+          0.0013295000026118942,
+          0.0012682000015047379
+        ],
+        "measured_runs": 5,
+        "peak_bytes": 35470,
+        "warmup_runs": 1
+      },
+      "id": "benchmark.workload",
+      "message": "benchmark workload completed",
+      "status": "pass"
+    }
+  ],
+  "limitations": [
+    "Reference and target outputs currently use the same ONNX Runtime CPU adapter; cross-runtime equivalence is not verified.",
+    "TensorRT engine compatibility is not verified in this environment."
+  ],
+  "manifest_digest": "1441b1ac9fe3d8313ea5e44e8ee8fe083c04422aa8feaa8fbd47d31a39d410f4",
+  "schema_version": "1",
+  "status": "pass"
+}

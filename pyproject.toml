@@ -8,8 +8,12 @@ license = {text = "MIT"}
 authors = [{name = "Ray Carter"}]
 dependencies = []
 
+[project.scripts]
+model-release-gate = "inference_artifact_lab.__main__:main"
+
 [project.optional-dependencies]
 test = ["pytest>=8.0"]
+runtime-cpu = ["numpy>=1.26", "onnxruntime==1.30.0"]
 
 [build-system]
 requires = ["setuptools>=75"]

@@ -1,5 +1,8 @@
 # Phase 1 Acceptance Contract
 
+This is a concise human-readable summary. The normative acceptance authority is
+[docs/codex/phases/phase-1-model-release-gate/acceptance.md](codex/phases/phase-1-model-release-gate/acceptance.md).
+
 Every case starts as `not_run`. A case can become `passed` only when the required
 observation and evidence are present in the report.
 

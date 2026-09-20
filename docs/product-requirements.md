@@ -1,5 +1,8 @@
 # Product Requirements: Model Release Gate
 
+This is the human-readable brief. The normative product contract and Phase 1
+requirements are maintained under [docs/codex](codex/README.md).
+
 **Product:** Inference Artifact Lab
 **Increment:** Phase 1 - Model Release Gate
 **Status:** approved for Phase 1 implementation
