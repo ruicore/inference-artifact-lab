@@ -24,5 +24,9 @@ Required evidence:
 - engine load and inference output compared with the PyTorch reference;
 - benchmark report and limitations.
 
+The first build command is prepared at
+`scripts/build_tensorrt_engine.ps1`. It mounts only this public project directory
+and the generated public ONNX artifact into the container.
+
 Until those observations are collected, the TensorRT profile is `blocked` and the
 overall Phase 1 release candidate cannot claim TensorRT compatibility.
