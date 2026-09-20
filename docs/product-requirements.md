@@ -2,7 +2,7 @@
 
 **Product:** Inference Artifact Lab
 **Increment:** Phase 1 - Model Release Gate
-**Status:** requirements proposed for implementation
+**Status:** approved for Phase 1 implementation
 **Date:** 2026-09-20
 
 ## Problem
@@ -70,6 +70,30 @@ references, final status, limitations, and unverified boundaries.
 Provide a clean-environment command sequence that reconstructs the artifact or
 verifies a pinned artifact and reproduces the gate report. Inputs must be public or
 generated, and the result must not depend on private services or credentials.
+
+## Frozen implementation baseline
+
+These choices constrain the first implementation without changing the product
+boundary:
+
+- Use one pinned public, non-robotics model and a deterministic generated
+  validation fixture. Record the exact model revision and source URL before its
+  first artifact is committed.
+- The mandatory artifact paths are an interchange artifact (ONNX) and a compiled
+  deployment artifact (TensorRT engine). A CPU reference path is required for
+  correctness comparison; GPU execution is required only for the TensorRT path.
+- The manifest is authoritative for names, shapes, dtypes, tolerances, runtime
+  requirements, and supported environments. Directory discovery and implicit
+  defaults must not select an artifact.
+- The first supported environment is the explicitly recorded local build/runtime
+  matrix. Other Python, driver, CUDA, GPU, and operating-system combinations are
+  `not_verified` until independently executed.
+- Phase 1 produces a local gate CLI and JSON report first. Registry upload,
+  production deployment, and automatic publication are out of scope.
+
+Changing the model fixture, tool version, or environment entry does not change the
+product requirements. Changing the gate dimensions, decision vocabulary, evidence
+rules, or release semantics requires a new product decision and acceptance review.
 
 ## Explicit non-goals
 

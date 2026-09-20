@@ -11,7 +11,8 @@ beyond the declared validation evidence.
 
 ## Current status
 
-Product Phase 1, requirements and acceptance design. Implementation has not started.
+Product Phase 1, requirements approved for implementation. The implementation
+skeleton is present; gate behavior has not started.
 
 ## Planned flow
 
