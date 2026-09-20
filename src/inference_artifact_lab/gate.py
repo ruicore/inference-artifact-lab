@@ -77,6 +77,8 @@ def _environment_check(manifest: Manifest, observed: Mapping[str, Any] | None) -
         return CheckResult("environment.compatibility", GateStatus.NOT_VERIFIED, "manifest declares no environment compatibility scope", {})
     if observed is None:
         return CheckResult("environment.compatibility", GateStatus.BLOCKED, "declared environment was not tested", {"required": dict(manifest.environment)})
+    if not isinstance(observed, Mapping):
+        return CheckResult("environment.compatibility", GateStatus.FAIL, "observed environment must be an object", {})
     mismatches = {key: {"expected": value, "observed": observed.get(key)} for key, value in manifest.environment.items() if observed.get(key) != value}
     if mismatches:
         return CheckResult("environment.compatibility", GateStatus.FAIL, "observed environment does not satisfy manifest", {"mismatches": mismatches})
@@ -135,7 +137,10 @@ def run_gate(
     """
     path = Path(artifact_path) if artifact_path is not None else Path(manifest.artifact.path)
     checks = _integrity_checks(manifest, path)
-    observed_contract = observed_contract or {}
+    if observed_contract is None:
+        observed_contract = {}
+    elif not isinstance(observed_contract, Mapping):
+        observed_contract = {"__invalid__": observed_contract}
     checks.extend((_compare_tensor_specs(manifest.inputs, observed_contract.get("inputs"), "inputs"), _compare_tensor_specs(manifest.outputs, observed_contract.get("outputs"), "outputs")))
     profiles_check = _profiles_check(manifest, observed_contract)
     if profiles_check is not None:

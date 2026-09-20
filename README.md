@@ -68,6 +68,16 @@ The report contract is defined by
 `schemas/release-report.schema.json`. A clean CPU reproduction starts with
 `pwsh scripts/clean_reproduction.ps1` in a fresh checkout.
 
+After generating the public fixture and reference output, the package CLI can
+execute the ONNX CPU adapter directly:
+
+```text
+python -m inference_artifact_lab examples/squeezenet11-torchvision.manifest.json `
+  --runtime onnx-cpu --inputs-npy artifacts/squeezenet11-fixture.npy `
+  --reference-output reference-output.json --environment environment.json `
+  --report reports/phase-1/cli-onnx-cpu.json
+```
+
 The authoritative development documentation follows the same phase/stage model
 used by the other portfolio repositories. Start at the [Codex document index](docs/codex/README.md), then read the [product contract](docs/codex/product-contract.md) and [Phase 1 plan](docs/codex/phases/phase-1-model-release-gate/README.md).
 
