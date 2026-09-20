@@ -22,6 +22,6 @@ separate products.
 - [Stage 04 - reproducible delivery](stages/04-reproducible-delivery.md)
 - [Validation record](stage-04-validation.md)
 
-Current lifecycle: Stage 02 preparation. The product contract, first public model,
-deterministic fixture definition, and Stage 01 core are recorded; runtime
-equivalence remains to be implemented.
+Current lifecycle: Stage 03 preparation. The product contract, public model,
+deterministic fixture, Stage 01 core, and PyTorch-to-ONNX CPU equivalence are
+recorded; TensorRT environment validation remains open.

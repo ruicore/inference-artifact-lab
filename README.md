@@ -11,9 +11,9 @@ beyond the declared validation evidence.
 
 ## Current status
 
-Product Phase 1, Stage 01 core is implemented and Stage 02 preparation is active.
-The full phase remains open until independent runtime equivalence and the declared
-TensorRT environment are verified.
+Product Phase 1, Stage 01 and PyTorch-to-ONNX CPU equivalence are implemented;
+Stage 03 TensorRT environment validation is active. The full phase remains open
+until the declared TensorRT environment is verified.
 
 ## Planned flow
 
@@ -27,6 +27,14 @@ public model
   -> resource benchmark
   -> machine-readable release report
 ```
+
+Run the public-reference smoke gate with:
+
+```text
+uv run --with torch --with torchvision --with onnx --with onnxruntime python scripts/run_torchvision_gate.py
+```
+
+It writes `reports/phase-1/squeezenet11-torchvision-onnx-cpu.json`.
 
 The authoritative development documentation follows the same phase/stage model
 used by the other portfolio repositories. Start at the [Codex document index](docs/codex/README.md), then read the [product contract](docs/codex/product-contract.md) and [Phase 1 plan](docs/codex/phases/phase-1-model-release-gate/README.md).

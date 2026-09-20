@@ -24,10 +24,12 @@ one requirement and an acceptance case.
 
 ## Baseline constraints
 
-The first implementation uses one pinned public non-robotics model, a generated
-deterministic fixture, ONNX as interchange artifact, and TensorRT as compiled
-deployment artifact. The exact model revision and environment fingerprint belong
-to the first evidence record, not to the general product contract.
+The first implementation uses one pinned public non-robotics PyTorch model, a
+generated deterministic fixture, ONNX as interchange artifact, and TensorRT as
+compiled deployment artifact. The reference path is torchvision/PyTorch CPU;
+target paths are ONNX Runtime CPU and TensorRT when the declared environment is
+available. Exact revisions and environment fingerprints belong to evidence records,
+not to the general product contract.
 
 ## Requirement change rule
 
