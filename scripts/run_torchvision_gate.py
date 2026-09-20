@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import platform
 from dataclasses import replace
@@ -69,8 +70,13 @@ def main() -> int:
         ),
     )
     args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(json.dumps(report.to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps(report.to_dict(), indent=2, sort_keys=True))
+    report_data = report.to_dict()
+    report_data["evidence"] = {
+        "fixture_sha256": hashlib.sha256(fixture_path.read_bytes()).hexdigest(),
+        "reference_output_sha256": hashlib.sha256(reference_path.read_bytes()).hexdigest(),
+    }
+    args.report.write_text(json.dumps(report_data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(json.dumps(report_data, indent=2, sort_keys=True))
     return 0 if report.status.value == "pass" else 1
 
 

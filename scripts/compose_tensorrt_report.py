@@ -26,6 +26,9 @@ def main() -> int:
 
     manifest = load_manifest(args.manifest)
     payload = json.loads(args.container_output.read_text(encoding="utf-8"))
+    expected_fixture_sha256 = hashlib.sha256(args.reference.with_name("squeezenet11-fixture.npy").read_bytes()).hexdigest()
+    if payload.get("fixture_sha256") != expected_fixture_sha256:
+        raise SystemExit("TensorRT output fixture digest does not match the reference fixture")
     target = payload["outputs"]["output"]
     reference = np.load(args.reference, allow_pickle=False)
     runtime = payload["runtime"]
@@ -61,7 +64,7 @@ def main() -> int:
     )
     report_data = report.to_dict()
     report_data["evidence"] = {
-        "fixture_sha256": hashlib.sha256(args.reference.with_name("squeezenet11-fixture.npy").read_bytes()).hexdigest(),
+        "fixture_sha256": expected_fixture_sha256,
         "reference_output_sha256": hashlib.sha256(args.reference.read_bytes()).hexdigest(),
         "container_runtime": runtime,
     }

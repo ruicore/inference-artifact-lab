@@ -90,22 +90,22 @@
     },
     {
       "evidence": {
-        "latency_max_seconds": 0.002205400000093505,
-        "latency_mean_seconds": 0.0016721799984225072,
-        "latency_median_seconds": 0.0014230999950086698,
-        "latency_min_seconds": 0.001414699996530544,
-        "latency_p95_seconds": 0.002143619999696966,
+        "latency_max_seconds": 0.0022554000024683774,
+        "latency_mean_seconds": 0.0015951199995470234,
+        "latency_median_seconds": 0.0014865999983157963,
+        "latency_min_seconds": 0.0013427000012598,
+        "latency_p95_seconds": 0.0021121800018590875,
         "latency_seconds": [
-          0.002205400000093505,
-          0.001414699996530544,
-          0.0014230999950086698,
-          0.0018964999981108122,
-          0.0014212000023690052
+          0.0014865999983157963,
+          0.0022554000024683774,
+          0.001539299999421928,
+          0.0013427000012598,
+          0.001351599996269215
         ],
         "measured_runs": 5,
         "peak_bytes": 35623,
         "peak_memory_scope": "python_tracemalloc",
-        "throughput_runs_per_second": 598.0217446347732,
+        "throughput_runs_per_second": 626.9120820276697,
         "warmup_runs": 1
       },
       "id": "benchmark.workload",
@@ -113,6 +113,10 @@
       "status": "pass"
     }
   ],
+  "evidence": {
+    "fixture_sha256": "3161e1f639bd8c78b14164b87c3fb0be8aeb821aa715fcc0cab2d93353242d89",
+    "reference_output_sha256": "9b9e35c2d6a1191685178087ce91bd352fadcebc97af24cb7b88ecf75fec0f06"
+  },
   "limitations": [
     "TensorRT engine evidence is recorded in the separate pinned-container report; this report covers the CPU profile.",
     "The benchmark peak memory scope is Python allocations only; native and GPU memory are covered by the TensorRT container report."

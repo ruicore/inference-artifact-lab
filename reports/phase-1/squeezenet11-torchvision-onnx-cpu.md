@@ -23,3 +23,12 @@
 
 - TensorRT engine evidence is recorded in the separate pinned-container report; this report covers the CPU profile.
 - The benchmark peak memory scope is Python allocations only; native and GPU memory are covered by the TensorRT container report.
+
+## Evidence
+
+```json
+{
+  "fixture_sha256": "3161e1f639bd8c78b14164b87c3fb0be8aeb821aa715fcc0cab2d93353242d89",
+  "reference_output_sha256": "9b9e35c2d6a1191685178087ce91bd352fadcebc97af24cb7b88ecf75fec0f06"
+}
+```

@@ -7,6 +7,7 @@ does not fetch or inspect any local model outside the mounted public project.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import subprocess
@@ -43,6 +44,7 @@ def main() -> int:
         "contract": adapter.contract(),
         "runtime": adapter.runtime_info(),
         "fixture_shape": list(fixture.shape),
+        "fixture_sha256": hashlib.sha256(args.fixture.read_bytes()).hexdigest(),
         "environment": {
             "container_digest": os.environ.get("MODEL_RELEASE_GATE_CONTAINER_DIGEST"),
             "gpu_name": gpu[0].strip(),
