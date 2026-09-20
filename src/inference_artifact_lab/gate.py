@@ -96,6 +96,15 @@ def _profiles_check(manifest: Manifest, observed_contract: Mapping[str, Any]) ->
     return CheckResult("contract.profiles", GateStatus.PASS, "artifact profiles match manifest", {"profiles": observed})
 
 
+def _format_check(manifest: Manifest, observed_contract: Mapping[str, Any]) -> CheckResult | None:
+    observed = observed_contract.get("artifact_format")
+    if observed is None:
+        return None
+    if observed != manifest.artifact.format:
+        return CheckResult("artifact.format", GateStatus.FAIL, "observed artifact format does not match manifest", {"expected": manifest.artifact.format, "observed": observed})
+    return CheckResult("artifact.format", GateStatus.PASS, "observed artifact format matches manifest", {"format": observed})
+
+
 def current_environment() -> dict[str, str]:
     return {"python": platform.python_version(), "system": platform.system(), "machine": platform.machine()}
 
@@ -131,6 +140,9 @@ def run_gate(
     profiles_check = _profiles_check(manifest, observed_contract)
     if profiles_check is not None:
         checks.append(profiles_check)
+    format_check = _format_check(manifest, observed_contract)
+    if format_check is not None:
+        checks.append(format_check)
     checks.append(_environment_check(manifest, observed_environment))
     return GateReport(_aggregate(checks), canonical_manifest_digest(manifest), {**manifest.artifact.to_dict(), "path": str(path)}, tuple(checks), ("Runtime numerical equivalence and benchmarks are not implemented by the core gate.",))
 

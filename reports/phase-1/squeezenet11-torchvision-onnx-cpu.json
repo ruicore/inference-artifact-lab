@@ -57,6 +57,14 @@
     },
     {
       "evidence": {
+        "format": "onnx"
+      },
+      "id": "artifact.format",
+      "message": "observed artifact format matches manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
         "observed": {
           "machine": "AMD64",
           "onnxruntime": "1.30.0",
@@ -82,22 +90,22 @@
     },
     {
       "evidence": {
-        "latency_max_seconds": 0.0018466000037733465,
-        "latency_mean_seconds": 0.0015508800017414615,
-        "latency_median_seconds": 0.001468800001021009,
-        "latency_min_seconds": 0.0014188999994075857,
-        "latency_p95_seconds": 0.0017955800038180314,
+        "latency_max_seconds": 0.002205400000093505,
+        "latency_mean_seconds": 0.0016721799984225072,
+        "latency_median_seconds": 0.0014230999950086698,
+        "latency_min_seconds": 0.001414699996530544,
+        "latency_p95_seconds": 0.002143619999696966,
         "latency_seconds": [
-          0.0018466000037733465,
-          0.0014286000005085953,
-          0.0014188999994075857,
-          0.001468800001021009,
-          0.0015915000039967708
+          0.002205400000093505,
+          0.001414699996530544,
+          0.0014230999950086698,
+          0.0018964999981108122,
+          0.0014212000023690052
         ],
         "measured_runs": 5,
         "peak_bytes": 35623,
         "peak_memory_scope": "python_tracemalloc",
-        "throughput_runs_per_second": 3223.9760615815344,
+        "throughput_runs_per_second": 598.0217446347732,
         "warmup_runs": 1
       },
       "id": "benchmark.workload",
@@ -107,8 +115,7 @@
   ],
   "limitations": [
     "TensorRT engine evidence is recorded in the separate pinned-container report; this report covers the CPU profile.",
-    "The benchmark peak memory scope is Python allocations only; native and GPU memory are covered by the TensorRT container report.",
-    "Historical development snapshot, not release approval. See docs/publication-review.md for benchmark and acceptance limitations."
+    "The benchmark peak memory scope is Python allocations only; native and GPU memory are covered by the TensorRT container report."
   ],
   "manifest_digest": "7edba69f960c634785642371f657a680e700dafd234861cc440a8a0815860e3b",
   "schema_version": "1",

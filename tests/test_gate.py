@@ -87,6 +87,16 @@ def test_environment_mismatch_fails(tmp_path):
     assert report.status is GateStatus.FAIL
 
 
+def test_observed_artifact_format_mismatch_fails(tmp_path):
+    artifact = tmp_path / "model.bin"
+    artifact.write_bytes(b"fixture")
+    manifest = make_manifest(artifact, hashlib.sha256(artifact.read_bytes()).hexdigest(), artifact.stat().st_size)
+    observed = observed_contract()
+    observed["artifact_format"] = "onnx"
+    report = run_gate(manifest, observed_contract=observed, observed_environment={"test": "local"})
+    assert next(check for check in report.checks if check.check_id == "artifact.format").status is GateStatus.FAIL
+
+
 def test_manifest_rejects_invalid_digest():
     with pytest.raises(ManifestError, match="64-character"):
         Manifest.from_dict(

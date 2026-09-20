@@ -140,6 +140,7 @@ def _adapter(tmp_path, cuda=None):
 def test_tensorrt_contract_and_profile_are_observable(tmp_path):
     adapter = _adapter(tmp_path)
     assert adapter.contract() == {
+        "artifact_format": "tensorrt-engine",
         "inputs": [{"name": "data", "dtype": "tensor(float)", "shape": [None, 3]}],
         "outputs": [{"name": "out", "dtype": "tensor(float)", "shape": [None, 1]}],
     }

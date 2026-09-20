@@ -135,7 +135,9 @@ class BenchmarkResult:
             "latency_mean_seconds": statistics.fmean(self.latency_seconds),
             "latency_median_seconds": statistics.median(self.latency_seconds),
             "latency_p95_seconds": _percentile(self.latency_seconds, 0.95),
-            "throughput_runs_per_second": self.measured_runs / statistics.fmean(self.latency_seconds),
+            # Samples are sequential calls. Counting the run count again would
+            # overstate throughput by the number of samples.
+            "throughput_runs_per_second": 1.0 / statistics.fmean(self.latency_seconds),
             "peak_memory_scope": self.memory_scope,
         }
 

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ruicore/inference-artifact-lab/schema/release-report-v1.json",
+  "title": "Inference Artifact Lab release report",
+  "type": "object",
+  "required": ["schema_version", "status", "manifest_digest", "artifact", "checks", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1"},
+    "status": {"enum": ["pass", "fail", "blocked", "not_verified"]},
+    "manifest_digest": {"type": ["string", "null"]},
+    "artifact": {"type": "object", "required": ["path", "format", "sha256"], "properties": {"path": {"type": "string"}, "format": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}},
+    "checks": {"type": "array", "items": {"type": "object", "required": ["id", "status", "message", "evidence"], "properties": {"id": {"type": "string"}, "status": {"enum": ["pass", "fail", "blocked", "not_verified"]}, "message": {"type": "string"}, "evidence": {"type": "object"}}}},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "evidence": {"type": "object"}
+  },
+  "additionalProperties": true
+}

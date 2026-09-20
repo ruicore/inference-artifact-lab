@@ -47,6 +47,12 @@ def run_release_gate(
         observed_environment=observed_environment,
     )
     checks = list(core.checks)
+    core_failed = any(check.status is GateStatus.FAIL for check in checks)
+    if core_failed:
+        checks.append(CheckResult("runtime.equivalence", GateStatus.BLOCKED, "runtime verification skipped because an integrity, contract, or environment check failed", {}))
+        checks.append(CheckResult("benchmark.workload", GateStatus.BLOCKED, "benchmark skipped because an integrity, contract, or environment check failed", {}))
+        limitations = tuple(item for item in core.limitations if "not implemented" not in item)
+        return GateReport(_aggregate(checks), core.manifest_digest, core.artifact, tuple(checks), limitations)
     if reference_outputs is None or target_outputs is None:
         checks.append(CheckResult("runtime.equivalence", GateStatus.BLOCKED, "reference and target runtime outputs are required", {}))
     else:

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 
 import numpy as np
@@ -20,6 +21,7 @@ def main() -> int:
     parser.add_argument("--reference", type=Path, default=Path("artifacts/squeezenet11-reference.npy"))
     parser.add_argument("--container-output", type=Path, default=Path("artifacts/squeezenet11-tensorrt-output.json"))
     parser.add_argument("--report", type=Path, default=Path("reports/phase-1/squeezenet11-tensorrt.json"))
+    parser.add_argument("--trtexec-log", type=Path, required=True)
     args = parser.parse_args()
 
     manifest = load_manifest(args.manifest)
@@ -27,6 +29,25 @@ def main() -> int:
     target = payload["outputs"]["output"]
     reference = np.load(args.reference, allow_pickle=False)
     runtime = payload["runtime"]
+    log = args.trtexec_log.read_text(encoding="utf-8")
+    performance = re.search(
+        r"Throughput:\s+(?P<throughput>[0-9.]+) qps.*?Latency:.*?mean = (?P<mean>[0-9.]+) ms, median = (?P<median>[0-9.]+) ms,.*?percentile\(95%\) = (?P<p95>[0-9.]+) ms",
+        log,
+        re.S,
+    )
+    if not performance:
+        raise SystemExit("trtexec log does not contain a performance summary")
+    benchmark_evidence = {
+        "source": "trtexec",
+        "warmup_duration_ms": 200,
+        "measured_runs": 100,
+        "transfer_scope": "device_only",
+        "latency_mean_seconds": float(performance["mean"]) / 1000,
+        "latency_median_seconds": float(performance["median"]) / 1000,
+        "latency_p95_seconds": float(performance["p95"]) / 1000,
+        "throughput_runs_per_second": float(performance["throughput"]),
+        "memory_scope": "not_peak; trtexec benchmark log does not expose process peak GPU memory",
+    }
     environment = dict(payload["environment"])
     environment["tensorrt"] = runtime["tensorrt_version"].rsplit(".", 1)[0]
     report = run_release_gate(
@@ -36,18 +57,7 @@ def main() -> int:
         observed_environment=environment,
         reference_outputs=reference,
         target_outputs=target,
-        benchmark_evidence={
-            "source": "trtexec",
-            "warmup_runs": 200,
-            "measured_runs": 100,
-            "transfer_scope": "device_only",
-            "latency_mean_seconds": 0.000379632,
-            "latency_median_seconds": 0.000351982,
-            "latency_p95_seconds": 0.000585251,
-            "throughput_runs_per_second": 2611.3,
-            "peak_memory_scope": "TensorRT allocator summary in trtexec output",
-            "peak_gpu_memory_mib": 9,
-        },
+        benchmark_evidence=benchmark_evidence,
     )
     report_data = report.to_dict()
     report_data["evidence"] = {

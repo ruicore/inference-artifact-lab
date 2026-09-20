@@ -13,4 +13,5 @@ redaction and package checks, and a complete acceptance regression. This stage
 establishes a local release candidate; publication remains a separate decision.
 
 Exit: AC-01 through AC-11 pass for the declared scope with actual clean-environment
-reproduction and generated JSON and human reports. This exit is not yet met.
+reproduction and generated JSON and human reports. Report schema and render scripts
+now exist; this exit is still not met until the clean reproduction is run.

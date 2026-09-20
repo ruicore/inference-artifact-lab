@@ -1,7 +1,7 @@
 param(
-    [string]$Image = 'nvcr.io/nvidia/tensorrt:25.02-py3',
+    [string]$Image = 'nvcr.io/nvidia/tensorrt@sha256:814325e2b8a653f354c30bbcf5ecc8d4c780cf878a88a320ae648fbfdd9dd82d',
     [string]$Onnx = 'artifacts/squeezenet1.1-torchvision.onnx',
-    [string]$Engine = 'artifacts/squeezenet1.1-torchvision.plan'
+    [string]$Engine = 'artifacts/squeezenet1.1-fp32.engine'
 )
 
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
@@ -10,6 +10,8 @@ docker run --rm --gpus all -v $mount -w /workspace $Image trtexec `
     --onnx=$Onnx `
     --saveEngine=$Engine `
     --shapes=data:1x3x224x224 `
+    --noTF32 `
+    --memPoolSize=workspace:512 `
     --dumpProfile
 
 if ($LASTEXITCODE -ne 0) {

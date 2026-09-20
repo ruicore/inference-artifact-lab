@@ -29,6 +29,7 @@ class OnnxRuntimeAdapter:
             return {"name": value.name, "dtype": value.type, "shape": list(value.shape)}
 
         return {
+            "artifact_format": "onnx",
             "inputs": [describe(value) for value in self._session.get_inputs()],
             "outputs": [describe(value) for value in self._session.get_outputs()],
         }
@@ -192,7 +193,7 @@ class TensorRTAdapter:
             value = {"name": name, "dtype": self._dtype_name(self._engine.get_tensor_dtype(name), np=self._np, trt=self._trt), "shape": self._tensor_shape(name)}
             target = inputs if self._engine.get_tensor_mode(name) == self._trt.TensorIOMode.INPUT else outputs
             target.append(value)
-        return {"inputs": inputs, "outputs": outputs}
+        return {"artifact_format": "tensorrt-engine", "inputs": inputs, "outputs": outputs}
 
     def optimization_profiles(self) -> list[dict[str, Any]]:
         """Return engine profile bounds without inventing a manifest schema."""

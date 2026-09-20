@@ -59,6 +59,14 @@
     },
     {
       "evidence": {
+        "format": "tensorrt-engine"
+      },
+      "id": "artifact.format",
+      "message": "observed artifact format matches manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
         "observed": {
           "compute_capability": "12.0",
           "container_digest": "sha256:814325e2b8a653f354c30bbcf5ecc8d4c780cf878a88a320ae648fbfdd9dd82d",
@@ -82,16 +90,15 @@
     },
     {
       "evidence": {
-        "latency_mean_seconds": 0.000379632,
-        "latency_median_seconds": 0.000351982,
+        "latency_mean_seconds": 0.00037963200000000003,
+        "latency_median_seconds": 0.00035198200000000003,
         "latency_p95_seconds": 0.000585251,
         "measured_runs": 100,
-        "peak_gpu_memory_mib": 9,
-        "peak_memory_scope": "TensorRT allocator summary in trtexec output",
+        "memory_scope": "not_peak; trtexec benchmark log does not expose process peak GPU memory",
         "source": "trtexec",
         "throughput_runs_per_second": 2611.3,
         "transfer_scope": "device_only",
-        "warmup_runs": 200
+        "warmup_duration_ms": 200
       },
       "id": "benchmark.workload",
       "message": "benchmark workload evidence supplied by the declared runtime harness",
@@ -137,9 +144,7 @@
     "fixture_sha256": "3161e1f639bd8c78b14164b87c3fb0be8aeb821aa715fcc0cab2d93353242d89",
     "reference_output_sha256": "9b9e35c2d6a1191685178087ce91bd352fadcebc97af24cb7b88ecf75fec0f06"
   },
-  "limitations": [
-    "Historical development snapshot, not release approval. See docs/publication-review.md for benchmark and acceptance limitations."
-  ],
+  "limitations": [],
   "manifest_digest": "c15fcdb1f5e0fb23c669a8bfdcc4cb7dff493308dfa46b354ee1e280d7e5829f",
   "schema_version": "1",
   "status": "pass"

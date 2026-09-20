@@ -24,19 +24,17 @@ too broad and is superseded by this review and the current validation record.
 
 Known gaps requiring implementation and revalidation:
 
-- The CLI checks supplied observations; it does not orchestrate a complete live
-  reference/target release verification.
-- Human report rendering and a formal report JSON schema remain unimplemented.
-- A from-scratch model export/build/reproduction workflow remains unverified;
-  current build-script defaults and example commands are not yet consistent.
-- The TensorRT report composer embeds historical benchmark numbers rather than
-  measuring each run. Its `warmup_runs: 200` represents 200 milliseconds from
-  trtexec, not 200 runs; GPU allocator memory came from engine construction.
-- CPU throughput currently divides the run count by mean latency, overstating
-  throughput by the sample count. Do not use these reports for performance claims.
-- Fixture/output evidence binding, actual artifact format/profile validation,
-  fail-fast runtime orchestration, and environment-negative coverage need review.
+- The CLI composes a release report from supplied runtime observations; the
+  adapter-specific launch scripts remain separate from the package CLI.
+- Fixture/output evidence binding and incompatible-environment coverage still
+  need dedicated acceptance tests.
 
-The checked-in reports are historical development evidence, not release approval.
+Completed since the initial review: benchmark throughput now uses inverse mean
+latency, TensorRT benchmark values are parsed from a supplied `trtexec` log,
+the report schema and Markdown renderer exist, and a public CPU clean-reproduction
+script now exports the pinned model from its verified weight digest.
+
+The checked-in reports are development evidence, not release approval until the
+remaining acceptance cases and clean reproduction are executed.
 No model binaries or third-party weights are redistributed under this project's
 MIT license. Upstream model/runtime licenses apply independently.

@@ -36,3 +36,9 @@ def test_benchmark_records_bounded_samples() -> None:
     evidence = result.to_dict()
     assert evidence["throughput_runs_per_second"] > 0
     assert evidence["peak_memory_scope"] == "python_tracemalloc"
+
+
+def test_benchmark_throughput_is_inverse_mean_latency() -> None:
+    result = benchmark(lambda: sum(range(10)), warmup_runs=0, measured_runs=3)
+    evidence = result.to_dict()
+    assert evidence["throughput_runs_per_second"] == 1.0 / evidence["latency_mean_seconds"]
