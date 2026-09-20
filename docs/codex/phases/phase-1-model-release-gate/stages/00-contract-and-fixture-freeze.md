@@ -13,5 +13,5 @@ model revision, deterministic fixture, ONNX/TensorRT artifact paths, and declare
 environment record. Implementation may proceed only from this contract.
 
 The exact model and environment values are recorded in [fixture.md](../fixture.md)
-and the example manifest. The TensorRT profile remains explicitly
-`not_verified` until a clean compatible environment is available.
+and the example manifests. The TensorRT profile is scoped to the pinned public
+container and its recorded host fingerprint.

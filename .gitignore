@@ -13,3 +13,4 @@ htmlcov/
 .private/
 artifacts/*
 !artifacts/.gitkeep
+reports/phase-1/*.log

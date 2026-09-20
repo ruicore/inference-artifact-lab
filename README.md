@@ -11,9 +11,9 @@ beyond the declared validation evidence.
 
 ## Current status
 
-Product Phase 1, Stage 01 and PyTorch-to-ONNX CPU equivalence are implemented;
-Stage 03 TensorRT environment validation is active. The full phase remains open
-until the declared TensorRT environment is verified.
+Product Phase 1 is locally complete for the declared Windows CPU and pinned
+TensorRT container profiles. The reports remain scoped to the public SqueezeNet
+fixture and do not claim compatibility with undeclared hardware or runtimes.
 
 ## Planned flow
 
@@ -35,6 +35,24 @@ uv run --with torch --with torchvision --with onnx --with onnxruntime python scr
 ```
 
 It writes `reports/phase-1/squeezenet11-torchvision-onnx-cpu.json`.
+
+Build and verify the TensorRT profile after pulling the pinned public image:
+
+```text
+pwsh scripts/build_tensorrt_engine.ps1
+docker run --rm --gpus all -v "${PWD}:/workspace" -w /workspace `
+  -e MODEL_RELEASE_GATE_CONTAINER_DIGEST=sha256:814325e2b8a653f354c30bbcf5ecc8d4c780cf878a88a320ae648fbfdd9dd82d `
+  nvcr.io/nvidia/tensorrt:25.02-py3 bash -lc `
+  "python -m pip install --quiet --index-url https://pypi.org/simple cuda-python==12.8.0; `
+   PYTHONPATH=/workspace/src python scripts/run_tensorrt_in_container.py `
+   --engine artifacts/squeezenet1.1-fp32.engine `
+   --fixture artifacts/squeezenet11-fixture.npy `
+   --output artifacts/squeezenet11-tensorrt-output.json"
+uv run --with numpy==2.4.6 python scripts/compose_tensorrt_report.py
+```
+
+The generated TensorRT report includes the contract, engine digest, fixture
+equivalence, declared GPU/container fingerprint, and `trtexec` benchmark scope.
 
 The authoritative development documentation follows the same phase/stage model
 used by the other portfolio repositories. Start at the [Codex document index](docs/codex/README.md), then read the [product contract](docs/codex/product-contract.md) and [Phase 1 plan](docs/codex/phases/phase-1-model-release-gate/README.md).

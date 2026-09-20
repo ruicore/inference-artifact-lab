@@ -64,8 +64,8 @@ def main() -> int:
     report = replace(
         report,
         limitations=(
-            "TensorRT engine compatibility is not verified in this CPU environment; a separate pinned NVIDIA container run is required.",
-            "The benchmark peak memory scope is Python allocations only; native and GPU memory require separate TensorRT container evidence.",
+            "TensorRT engine evidence is recorded in the separate pinned-container report; this report covers the CPU profile.",
+            "The benchmark peak memory scope is Python allocations only; native and GPU memory are covered by the TensorRT container report.",
         ),
     )
     args.report.parent.mkdir(parents=True, exist_ok=True)

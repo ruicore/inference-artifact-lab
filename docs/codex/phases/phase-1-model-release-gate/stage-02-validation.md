@@ -14,10 +14,8 @@ independent runtime equivalence, deterministic fixture execution, and bounded
 benchmark checks pass locally. The maximum absolute error observed was
 `2.384185791015625e-06`.
 
-The current smoke report deliberately records two limitations:
+The TensorRT profile is validated separately by the pinned-container report
+`reports/phase-1/squeezenet11-tensorrt.json`; this record remains scoped to the
+PyTorch-to-ONNX CPU path.
 
-- TensorRT engine compatibility is not verified in the current clean project
-  environment.
-
-Stage 02 is locally passed for the PyTorch-to-ONNX CPU path. These limitations must
-remain visible in any report until the TensorRT profile is validated.
+Stage 02 is locally passed for both declared runtime correctness paths.

@@ -24,10 +24,10 @@ committed to Git.
 
 ## Deterministic fixture
 
-The first fixture is generated locally with NumPy's PCG64 generator using seed
-`20260920`, shape `[1, 3, 224, 224]`, dtype `float32`, and values uniformly sampled
-from `[-1.0, 1.0)`. The fixture digest and generated reference output are recorded
-in the validation report rather than committed as private or opaque evidence.
+The fixture is generated locally with `torch.Generator().manual_seed(20260920)`
+and `torch.rand`, shape `[1, 3, 224, 224]`, dtype `float32`, and values in
+`[0.0, 1.0)`. The generated fixture and reference output remain ignored binary
+evidence; their SHA-256 digests are recorded in the validation reports.
 
 ## Environment profiles
 
@@ -35,8 +35,9 @@ in the validation report rather than committed as private or opaque evidence.
   2.14.0+cpu, torchvision 0.29.0+cpu.
 - `onnx-cpu-windows-py311`: Python 3.11.5, Windows AMD64, ONNX Runtime 1.30.0,
   `CPUExecutionProvider`.
-- `tensorrt-gpu`: declared target profile; remains `not_verified` until a clean
-  public-project environment supplies TensorRT and a compiled engine.
+- `tensorrt-gpu`: TensorRT 10.8.0 in `nvcr.io/nvidia/tensorrt:25.02-py3`,
+  observed on RTX 5050 / compute capability 12.0; evidence is scoped to this
+  declared container and host fingerprint.
 
 The reference smoke command uses a temporary public CPU environment and does not
 add PyTorch to the gate package's default dependency set:

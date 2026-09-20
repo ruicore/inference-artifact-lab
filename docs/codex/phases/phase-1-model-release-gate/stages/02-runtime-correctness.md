@@ -3,7 +3,7 @@ audience: codex
 document_role: stage_plan
 phase_id: PH1
 stage_id: PH1-ST02
-status: implementation_in_progress
+status: complete
 ---
 
 # Stage 02 - Runtime correctness

@@ -2,7 +2,7 @@
 audience: codex
 document_role: phase_index
 phase_id: PH1
-status: stage_01_implementation_in_progress
+status: local_complete
 ---
 
 # Phase 1 - Model Release Gate
@@ -22,6 +22,7 @@ separate products.
 - [Stage 04 - reproducible delivery](stages/04-reproducible-delivery.md)
 - [Validation record](stage-04-validation.md)
 
-Current lifecycle: Stage 03 preparation. The product contract, public model,
-deterministic fixture, Stage 01 core, and PyTorch-to-ONNX CPU equivalence are
-recorded; TensorRT environment validation remains open.
+Current lifecycle: local release candidate. The declared CPU and TensorRT
+profiles have identity, contract, correctness, environment, and benchmark
+reports. Publication and support for undeclared environments remain outside
+this phase.

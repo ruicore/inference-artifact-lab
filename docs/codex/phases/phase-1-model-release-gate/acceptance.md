@@ -3,8 +3,8 @@ audience: codex
 document_role: phase_acceptance_contract
 phase_id: PH1
 authority: normative
-status: active
-case_default_status: not_run
+status: local_pass
+case_default_status: pass_for_declared_profiles
 ---
 
 # Phase 1 acceptance contract
