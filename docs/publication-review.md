@@ -34,6 +34,12 @@ latency, TensorRT benchmark values are parsed from a supplied `trtexec` log,
 the report schema and Markdown renderer exist, and a public CPU clean-reproduction
 script now exports the pinned model from its verified weight digest.
 
+The pinned TensorRT build script now runs successfully with the public image
+digest. TensorRT engine bytes can still change across rebuilds because tactic
+timing selects an engine for the observed GPU; the current manifest therefore
+pins the observed engine hash and does not claim byte-for-byte engine rebuild
+reproducibility.
+
 The checked-in reports are development evidence, not release approval until the
 remaining acceptance cases and clean reproduction are executed.
 No model binaries or third-party weights are redistributed under this project's

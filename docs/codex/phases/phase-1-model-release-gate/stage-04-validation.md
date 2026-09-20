@@ -18,7 +18,7 @@ TensorRT smoke execution were observed, but do not close Phase 1 acceptance.
 | AC-07..08 | Local compatible execution observed; full incompatible-environment fail-fast path remains open |
 | AC-09 | Historical timings only; throughput, warmup units and memory scope require correction |
 | AC-10 | JSON snapshots exist; formal schema and human report rendering remain open |
-| AC-11 | Not verified from a fresh environment and empty artifact directory |
+| AC-11 | CPU clean reproduction passed; TensorRT engine rebuild is not byte-for-byte reproducible and remains scoped to the observed pinned engine |
 
 See [publication review](../../../publication-review.md) for specific limitations.
 This is a development preview, not a completed product acceptance or release.

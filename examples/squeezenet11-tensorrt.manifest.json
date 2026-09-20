@@ -8,8 +8,8 @@
   "artifact": {
     "path": "../artifacts/squeezenet1.1-fp32.engine",
     "format": "tensorrt-engine",
-    "sha256": "e37a73806f53212e9ef8918e35bd924d2657e07cdb9a70b6206c5efd8d40267a",
-    "size_bytes": 7298860,
+    "sha256": "0b174885daa963f84bceff434b072714b399ba7ec8d8de2e4c8275a58d4ad6a0",
+    "size_bytes": 7702460,
     "build_inputs": {
       "onnx_sha256": "4ed9006c47bb1eb8521eed0f8b22aa49003a8013c8e4adf5db414f7c8e927534",
       "precision": "fp32",

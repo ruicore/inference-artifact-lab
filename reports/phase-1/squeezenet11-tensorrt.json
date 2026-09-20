@@ -8,8 +8,8 @@
     },
     "format": "tensorrt-engine",
     "path": "artifacts\\squeezenet1.1-fp32.engine",
-    "sha256": "e37a73806f53212e9ef8918e35bd924d2657e07cdb9a70b6206c5efd8d40267a",
-    "size_bytes": 7298860,
+    "sha256": "0b174885daa963f84bceff434b072714b399ba7ec8d8de2e4c8275a58d4ad6a0",
+    "size_bytes": 7702460,
     "tools": {
       "container": "nvcr.io/nvidia/tensorrt:25.02-py3",
       "container_digest": "sha256:814325e2b8a653f354c30bbcf5ecc8d4c780cf878a88a320ae648fbfdd9dd82d",
@@ -27,7 +27,7 @@
     },
     {
       "evidence": {
-        "observed": 7298860
+        "observed": 7702460
       },
       "id": "artifact.size",
       "message": "artifact size matches manifest",
@@ -35,7 +35,7 @@
     },
     {
       "evidence": {
-        "sha256": "e37a73806f53212e9ef8918e35bd924d2657e07cdb9a70b6206c5efd8d40267a"
+        "sha256": "0b174885daa963f84bceff434b072714b399ba7ec8d8de2e4c8275a58d4ad6a0"
       },
       "id": "artifact.sha256",
       "message": "artifact SHA-256 matches manifest",
@@ -90,13 +90,13 @@
     },
     {
       "evidence": {
-        "latency_mean_seconds": 0.00037963200000000003,
-        "latency_median_seconds": 0.00035198200000000003,
-        "latency_p95_seconds": 0.000585251,
+        "latency_mean_seconds": 0.00035659499999999997,
+        "latency_median_seconds": 0.000324608,
+        "latency_p95_seconds": 0.000524353,
         "measured_runs": 100,
         "memory_scope": "not_peak; trtexec benchmark log does not expose process peak GPU memory",
         "source": "trtexec",
-        "throughput_runs_per_second": 2611.3,
+        "throughput_runs_per_second": 2795.71,
         "transfer_scope": "device_only",
         "warmup_duration_ms": 200
       },
@@ -145,7 +145,7 @@
     "reference_output_sha256": "9b9e35c2d6a1191685178087ce91bd352fadcebc97af24cb7b88ecf75fec0f06"
   },
   "limitations": [],
-  "manifest_digest": "c15fcdb1f5e0fb23c669a8bfdcc4cb7dff493308dfa46b354ee1e280d7e5829f",
+  "manifest_digest": "e5a33c0b09061afb6c54001008d97fa93f3ada9496c8337e4a720bed0dcf9dbe",
   "schema_version": "1",
   "status": "pass"
 }

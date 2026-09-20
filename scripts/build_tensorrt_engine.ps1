@@ -9,7 +9,6 @@ $mount = "$root`:/workspace"
 docker run --rm --gpus all -v $mount -w /workspace $Image trtexec `
     --onnx=$Onnx `
     --saveEngine=$Engine `
-    --shapes=data:1x3x224x224 `
     --noTF32 `
     --memPoolSize=workspace:512 `
     --dumpProfile

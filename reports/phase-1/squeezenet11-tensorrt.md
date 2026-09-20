@@ -2,7 +2,7 @@
 
 - Status: **pass**
 - Schema: `1`
-- Manifest digest: `c15fcdb1f5e0fb23c669a8bfdcc4cb7dff493308dfa46b354ee1e280d7e5829f`
+- Manifest digest: `e5a33c0b09061afb6c54001008d97fa93f3ada9496c8337e4a720bed0dcf9dbe`
 - Artifact: `artifacts\squeezenet1.1-fp32.engine`
 
 ## Checks
