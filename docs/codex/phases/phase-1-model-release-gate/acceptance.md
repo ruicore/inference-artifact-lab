@@ -29,8 +29,10 @@ are collected. A unit test without the required evidence does not pass a case.
 ## Exit rule
 
 Phase 1 passes only when AC-01 through AC-08 and AC-10 pass, and AC-11 passes for
-each environment the release claims to support. AC-09 is required for a performance
-claim. Any unavailable required environment is `blocked`.
+each environment the release claims to support. For compiled TensorRT artifacts,
+AC-11 verifies the pinned engine and gate decision; it does not require a rebuild
+to produce identical bytes. AC-09 is required for a performance claim. Any
+unavailable required environment is `blocked`.
 
 Numerical equivalence is bounded by the declared fixture and tolerances. A local
 run does not prove compatibility with undeclared hardware, drivers, or runtimes.

@@ -70,9 +70,12 @@ references, final status, limitations, and unverified boundaries.
 
 ### R8 - Reproducibility
 
-Provide a clean-environment command sequence that reconstructs the artifact or
-verifies a pinned artifact and reproduces the gate report. Inputs must be public or
-generated, and the result must not depend on private services or credentials.
+Provide a clean-environment command sequence that reconstructs an interchange
+artifact or verifies a pinned compiled artifact and reproduces the gate report.
+For TensorRT, the pinned engine digest is the release identity; a rebuild may be
+validated for contract and numerical behavior without claiming identical engine
+bytes. Inputs must be public or generated, and the result must not depend on
+private services or credentials.
 
 ## Frozen implementation baseline
 

@@ -35,6 +35,10 @@ release decision.
 - A reference/runtime comparison must use declared tolerances and a reproducible
   fixture.
 - Environment compatibility is explicit and fail-fast for declared requirements.
+- A compiled TensorRT artifact is identified by its manifest digest, engine digest,
+  build inputs, container digest, and observed hardware fingerprint. Rebuilding it
+  may produce different bytes because TensorRT tactic timing is hardware- and run-
+  dependent; byte-for-byte rebuild identity is outside the Phase 1 claim.
 
 ## Phase 1 boundary
 
