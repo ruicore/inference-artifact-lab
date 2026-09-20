@@ -1,0 +1,109 @@
+{
+  "artifact": {
+    "build_inputs": {
+      "exporter": "torch.onnx.export",
+      "opset": 18
+    },
+    "format": "onnx",
+    "path": "artifacts\\squeezenet1.1-torchvision.onnx",
+    "sha256": "4ed9006c47bb1eb8521eed0f8b22aa49003a8013c8e4adf5db414f7c8e927534",
+    "size_bytes": 4958275,
+    "tools": {
+      "onnxruntime": "1.30.0",
+      "torch": "2.14.0+cpu",
+      "torchvision": "0.29.0+cpu"
+    }
+  },
+  "checks": [
+    {
+      "evidence": {
+        "path": "artifacts\\squeezenet1.1-torchvision.onnx"
+      },
+      "id": "artifact.exists",
+      "message": "artifact file exists",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "observed": 4958275
+      },
+      "id": "artifact.size",
+      "message": "artifact size matches manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "sha256": "4ed9006c47bb1eb8521eed0f8b22aa49003a8013c8e4adf5db414f7c8e927534"
+      },
+      "id": "artifact.sha256",
+      "message": "artifact SHA-256 matches manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "count": 1
+      },
+      "id": "contract.inputs",
+      "message": "artifact inputs match manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "count": 1
+      },
+      "id": "contract.outputs",
+      "message": "artifact outputs match manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "observed": {
+          "machine": "AMD64",
+          "onnxruntime": "1.30.0",
+          "provider": "CPUExecutionProvider",
+          "python": "3.11.5",
+          "system": "Windows",
+          "torch": "2.14.0+cpu",
+          "torchvision": "0.29.0+cpu"
+        }
+      },
+      "id": "environment.compatibility",
+      "message": "observed environment satisfies manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "compared_values": 1000,
+        "max_absolute_error": 2.384185791015625e-06
+      },
+      "id": "runtime.equivalence",
+      "message": "target output is within declared tolerance",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "latency_max_seconds": 0.001669099998252932,
+        "latency_min_seconds": 0.0013404000019363593,
+        "latency_seconds": [
+          0.001669099998252932,
+          0.0013404000019363593,
+          0.0013544999965233728,
+          0.001372099999571219,
+          0.001342399998975452
+        ],
+        "measured_runs": 5,
+        "peak_bytes": 35489,
+        "warmup_runs": 1
+      },
+      "id": "benchmark.workload",
+      "message": "benchmark workload completed",
+      "status": "pass"
+    }
+  ],
+  "limitations": [
+    "TensorRT engine compatibility is not verified in this environment."
+  ],
+  "manifest_digest": "7edba69f960c634785642371f657a680e700dafd234861cc440a8a0815860e3b",
+  "schema_version": "1",
+  "status": "pass"
+}
