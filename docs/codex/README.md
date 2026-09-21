@@ -15,6 +15,7 @@ Read documents in this order:
 5. Phase 1 [acceptance contract](phases/phase-1-model-release-gate/acceptance.md)
 6. Phase 1 [delivery plan](phases/phase-1-model-release-gate/phase-plan.md)
 7. Stage plan and validation records
+8. [Continuation guide](continuation-guide.md)
 
 The catalog owns portfolio direction and clean-room provenance. This repository
 owns product behavior, implementation contracts, and project evidence. Do not
