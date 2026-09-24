@@ -12,9 +12,10 @@ beyond the declared validation evidence.
 ## Current status
 
 The first Phase 1 acceptance and release scope is the declared ONNX Runtime CPU
-profile (`onnx-cpu-windows-py311`). Its isolated working-tree reproduction passes
-in a fresh Python environment; committed-checkout AC-11 remains open for these
-local edits. CPU performance evidence covers Python allocation peaks only.
+profile (`onnx-cpu-windows-py311`). Its local acceptance passed, including an
+independent clean clone of a committed revision and a fresh Python environment.
+CPU performance evidence covers Python allocation peaks only. This is not a
+published release or a claim about other environments.
 
 TensorRT is an independent optional preview, evaluated per GPU/runtime platform.
 Its portable provenance and peak GPU memory remain `not_verified`, and exact-

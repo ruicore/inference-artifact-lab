@@ -2,7 +2,7 @@
 audience: codex
 document_role: phase_index
 phase_id: PH1
-status: implementation_in_progress
+status: cpu_complete_locally
 ---
 
 # Phase 1 - Model Release Gate
@@ -23,7 +23,8 @@ separate products.
 - [Stage 04 - reproducible delivery](stages/04-reproducible-delivery.md)
 - [Validation record](stage-04-validation.md)
 
-Current lifecycle: CPU acceptance candidate, awaiting committed-checkout AC-11.
+Current lifecycle: the declared CPU-only Phase 1 acceptance is complete locally,
+including committed-checkout AC-11. Publication and release remain separate.
 TensorRT provenance/performance remain `not_verified` and clean-checkout
 reproduction remains `blocked`; these preview gaps do not block CPU acceptance.
 See [publication review](../../../publication-review.md).

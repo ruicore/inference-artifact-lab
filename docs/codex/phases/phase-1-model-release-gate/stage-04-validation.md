@@ -3,7 +3,7 @@ audience: codex
 document_role: validation_record
 phase_id: PH1
 stage_id: PH1-ST04
-status: cpu_acceptance_candidate
+status: cpu_local_pass
 ---
 
 # Phase 1 validation record
@@ -28,14 +28,14 @@ fixture, and declared environment.
 | AC-08 | pass | CPU CLI rejects an impossible Python version before loading a missing fixture or adapter. |
 | AC-09 | pass for bounded CPU benchmark | Warm-up, repeated samples, latency, throughput, and Python allocation peak are observed. Native process and GPU peak memory are not observed or claimed. |
 | AC-10 | pass for generated reports | The version-1 Draft 2020-12 schema validates the common report shape; generator tests cross-check the explicit profile/role and environment scope against the manifest, and Markdown rendering and limited private-path/credential checks pass. The version-1 schema alone does not require or authenticate `scope` in caller-supplied JSON. Publication review is separate. |
-| AC-11 | not_verified for committed checkout | A temporary copy of Git-tracked current working-tree files, a new Python 3.11.5 environment, and no copied binary artifacts reproduced ONNX SHA-256 `4ed9006c...` and reference/package CLI `pass`. This preliminary run is not a fresh checkout of a committed revision. |
+| AC-11 | pass for committed CPU checkout | An independent clean local clone of commit `d8936237db3321fad79c75627ae364668ff65e58` ran the reproduction script with a fresh Python 3.11.5 environment and no copied binary artifacts. It regenerated ONNX SHA-256 `4ed9006c...`; reference and package CLI both returned `pass` with matching manifest digest `95187924...`. The clone was clean before and after the run. |
 
 CPU runtime report: `reports/phase-1/squeezenet11-torchvision-onnx-cpu.json`.
-The report's manifest digest identifies the exact CPU declaration. Runtime
-`pass` is separate from Phase 1 exit: the remaining CPU gate is committed-checkout
-AC-11. This row must be updated only after that actual run.
+The report's manifest digest identifies the exact CPU declaration. AC-01 through
+AC-11 now meet the CPU-only local exit rule, including the bounded AC-09 performance
+claim. This is not TensorRT acceptance or authorization to publish a release.
 
-September 24 verification of the CPU-only candidate:
+September 24 verification of the CPU-only local acceptance:
 
 - `uv run --extra test --extra runtime-cpu pytest -q`: 52 passed.
 - `uv build`: wheel and source distribution built successfully.
@@ -45,7 +45,15 @@ September 24 verification of the CPU-only candidate:
   SHA-256 `4ed9006c47bb1eb8521eed0f8b22aa49003a8013c8e4adf5db414f7c8e927534`,
   and matched reference/CLI manifest digest
   `95187924e351a0817a37db70dac9f73770d200f8e84409b7c214f8178cd2451d`.
-  The temporary copy was removed; this does not close committed-checkout AC-11.
+  The temporary copy was removed; this was preliminary evidence before the
+  committed-checkout run.
+- `git clone --no-local --no-hardlinks` of local commit
+  `d8936237db3321fad79c75627ae364668ff65e58`, followed by
+  `pwsh -NoProfile -File scripts/clean_reproduction.ps1`: clean checkout and new
+  Python 3.11.5 environment returned `clean CPU reproduction PASS` with the same
+  manifest digest `95187924e351a0817a37db70dac9f73770d200f8e84409b7c214f8178cd2451d`.
+  The checkout was clean before and after reproduction; its temporary path is
+  intentionally not part of the public evidence.
 - CPU runtime report regenerated; TensorRT portable report recomposed from
   existing public-model container evidence and remains `not_verified`. No new
   TensorRT GPU execution was required or claimed for this CPU-only change.

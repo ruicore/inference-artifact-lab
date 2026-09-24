@@ -66,7 +66,8 @@ is scoped to its container and observed hardware fingerprint.
 ## Current release boundary
 
 Phase 1's first acceptance and release scope is the declared ONNX Runtime CPU
-profile. Committed-checkout AC-11 remains required after working-tree isolation.
+profile. Committed-checkout AC-11 passed locally on 2026-09-24; future changes
+to the acceptance path must be reproduced from their own committed revision.
 TensorRT is an independent optional preview; its provenance, GPU peak-memory,
 and exact-engine reproduction gaps do not block CPU acceptance and are never
 satisfied by a CPU pass. Future TensorRT profiles remain platform-specific.

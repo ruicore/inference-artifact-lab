@@ -19,8 +19,9 @@ publication review, not a production release certification.
 ## Product evidence boundary
 
 The first Phase 1 acceptance and release scope is ONNX Runtime CPU on the
-declared `onnx-cpu-windows-py311` profile. Committed-checkout AC-11 is still open
-for these local edits. TensorRT is an independent optional platform-specific
+declared `onnx-cpu-windows-py311` profile. Committed-checkout AC-11 passed locally
+on 2026-09-24 for commit `d8936237db3321fad79c75627ae364668ff65e58`.
+TensorRT is an independent optional platform-specific
 preview; its limitations do not block the CPU-only exit. Earlier blanket
 completion language is superseded by the current per-profile validation record.
 
@@ -32,11 +33,11 @@ tests. The TensorRT container adapter remains separate because its engine claim
 is bound to the pinned container and observed GPU profile. A new public-history
 and disclosure review is required before these local edits are pushed.
 
-Remaining CPU acceptance gate:
-
-- `AC-11` on a committed CPU checkout has not been re-run for these uncommitted
-  changes. The successful run used a temporary copy of Git-tracked current
-  working-tree files and a new Python environment, with no copied artifacts.
+The CPU-only local acceptance gate passed. An independent clean local clone of
+the committed revision ran the public-input reproduction script in a new Python
+3.11.5 environment, regenerated the pinned ONNX digest, and returned matching
+reference/package CLI `pass` decisions. This is local validation, not a new
+public-history or disclosure review of the changes after that commit.
 
 Independent TensorRT preview gaps (not CPU blockers):
 
@@ -65,7 +66,8 @@ pins the observed engine hash and does not claim byte-for-byte engine rebuild
 reproducibility.
 
 The checked-in CPU report is a runtime `pass` for its declared profile; the
-separate acceptance record owns Phase 1 exit, including committed-checkout AC-11.
+separate acceptance record owns the CPU-only Phase 1 exit, including the locally
+observed committed-checkout AC-11.
 Its benchmark measures Python allocation peaks only; native process and GPU
 peaks are unverified. TensorRT remains `not_verified` with `blocked` AC-11 and is
 not validated by a CPU pass. Neither report authorizes automatic model release
