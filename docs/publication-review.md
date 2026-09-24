@@ -30,14 +30,14 @@ CPU adapter path. It probes the actual environment, rejects supplied observation
 files on that path, checks artifact and pinned fixture/reference-output digests
 before execution, and has dedicated incompatible-environment and tampered-fixture
 tests. The TensorRT container adapter remains separate because its engine claim
-is bound to the pinned container and observed GPU profile. A new public-history
-and disclosure review is required before these local edits are pushed.
+is bound to the pinned container and observed GPU profile. The subsequent
+public-history and disclosure review is recorded below.
 
 The CPU-only local acceptance gate passed. An independent clean local clone of
 the committed revision ran the public-input reproduction script in a new Python
 3.11.5 environment, regenerated the pinned ONNX digest, and returned matching
-reference/package CLI `pass` decisions. This is local validation, not a new
-public-history or disclosure review of the changes after that commit.
+reference/package CLI `pass` decisions. This is local validation; the separate
+pre-push history and disclosure review is recorded below.
 
 Independent TensorRT preview gaps (not CPU blockers):
 
@@ -78,3 +78,31 @@ schema alone, cross-check scope against the manifest. Caller-supplied JSON needs
 the same cross-check before its scope can be trusted.
 No model binaries or third-party weights are redistributed under this project's
 MIT license. Upstream model/runtime licenses apply independently.
+
+## 2026-09-24 pre-push review of the CPU acceptance update
+
+The user explicitly authorized pushing the completed project changes. This
+review covers the local `main` changes since public `2de01f8`, including the
+CPU-only acceptance and its documentation, before pushing to the existing
+public remote. It is not a tagged release or a TensorRT acceptance decision.
+
+- The remote is public and advertises only `main`; no tags or pull refs were
+  advertised. The two new commits use a GitHub noreply author address.
+- All 18 locally reachable commits received a targeted tracked-text scan for
+  known employer identifiers, private Windows paths, private-network address
+  patterns, and common credential prefixes. The only network-pattern matches
+  were the public TensorRT version `10.8.0.43`, not an address. No tracked model
+  weights, engines, datasets, logs, screenshots, or private evidence were found.
+- The 1,292 added lines since the remote tip were checked for those identifiers,
+  private paths, obvious secret assignments, and private-key headers. Added URL
+  hosts were limited to public PyTorch and Python package distribution sites.
+- `uv run --extra test --extra runtime-cpu pytest -q` passed 52 tests;
+  `uv build` produced a wheel and source distribution; `git diff --check`
+  passed. CPU AC-11 was separately reproduced from clean committed checkouts.
+- `gitleaks` was not available for this follow-up, so these targeted and
+  semantic checks do not claim an independent comprehensive secret scan.
+
+The reviewed claim remains limited to the declared ONNX CPU environment and
+public model. TensorRT is an optional platform-specific preview with the gaps
+listed above. Pushing source and reports does not publish a package, tag, or
+case study and does not certify production use.
