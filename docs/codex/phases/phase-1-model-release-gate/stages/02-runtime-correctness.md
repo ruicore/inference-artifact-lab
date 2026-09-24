@@ -12,4 +12,6 @@ Add a torchvision/PyTorch CPU reference adapter and target runtime adapters for
 ONNX and TensorRT, then compare deterministic fixture outputs under manifest tolerances. Invalid,
 non-finite, and wrong-shape outputs must remain failures.
 
-Exit: AC-05 and AC-06 pass; no general model-quality claim is made.
+Exit: AC-05 and AC-06 pass for the declared CPU profile; no general model-quality
+claim is made. TensorRT remains an independent optional preview; portable
+provenance is `not_verified` and is not part of the CPU exit.

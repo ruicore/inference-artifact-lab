@@ -23,9 +23,16 @@ observation and evidence are present in the report.
 ## Gate rule
 
 The release decision is `pass` only when AC-01 through AC-08 and AC-10 pass, and
-AC-11 passes for every environment the release claims to support. AC-09 is required
+AC-11 passes from a fresh committed checkout and fresh Python environment for
+`onnx-cpu-windows-py311`, the first release's only supported profile. AC-09 is required
 for a performance claim; otherwise the report must state that performance is not
 verified. Any unavailable required environment yields `blocked` rather than pass.
+
+TensorRT is an independent optional preview with platform-specific evidence.
+Its missing provenance, peak GPU memory, or exact-engine reproduction evidence
+stays `not_verified` / `blocked` without blocking the CPU-only exit. CPU success
+does not validate TensorRT. CPU performance is bounded to the recorded workload
+and Python allocation peak; native process and GPU peaks remain unverified.
 
 ## Evidence boundaries
 

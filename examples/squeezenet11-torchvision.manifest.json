@@ -3,7 +3,8 @@
   "model": {
     "name": "squeezenet-1.1",
     "version": "torchvision-SqueezeNet1_1_Weights.IMAGENET1K_V1",
-    "source": "https://download.pytorch.org/models/squeezenet1_1-b8a52dc0.pth"
+    "source": "https://download.pytorch.org/models/squeezenet1_1-b8a52dc0.pth",
+    "source_sha256": "b8a52dc049b60e4b6ab68ad0df457362afab8b6304b2febdc1650a5dab4d7e7b"
   },
   "artifact": {
     "path": "../artifacts/squeezenet1.1-torchvision.onnx",
@@ -22,11 +23,17 @@
     ]
   },
   "runtime": {
+    "profile": "onnx-cpu-windows-py311",
+    "acceptance_role": "cpu_baseline",
     "reference": "torchvision",
     "target": "onnxruntime",
     "provider": "CPUExecutionProvider"
   },
   "tolerances": {"absolute": 0.0001, "relative": 0.001},
+  "fixture": {
+    "input_sha256": "3161e1f639bd8c78b14164b87c3fb0be8aeb821aa715fcc0cab2d93353242d89",
+    "reference_output_sha256": "9b9e35c2d6a1191685178087ce91bd352fadcebc97af24cb7b88ecf75fec0f06"
+  },
   "environment": {
     "python": "3.11.5",
     "system": "Windows",

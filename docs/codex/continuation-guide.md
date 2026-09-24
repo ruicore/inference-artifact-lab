@@ -65,12 +65,14 @@ is scoped to its container and observed hardware fingerprint.
 
 ## Current release boundary
 
-Phase 1 is a development preview. The public CPU and TensorRT smoke paths,
-reports, clean reproduction, and PyPI package are evidence for the declared
-scope. They do not establish universal hardware compatibility, production
-deployment safety, or byte-identical TensorRT rebuilds. Keep the remaining
-acceptance gaps in `docs/publication-review.md` until their required evidence is
-collected.
+Phase 1's first acceptance and release scope is the declared ONNX Runtime CPU
+profile. Committed-checkout AC-11 remains required after working-tree isolation.
+TensorRT is an independent optional preview; its provenance, GPU peak-memory,
+and exact-engine reproduction gaps do not block CPU acceptance and are never
+satisfied by a CPU pass. Future TensorRT profiles remain platform-specific.
+Keep both CPU acceptance and preview gaps explicit in `docs/publication-review.md`.
+These paths do not establish universal hardware compatibility, production
+deployment safety, or byte-identical TensorRT rebuilds.
 
 The package release is a manually authorized distribution of the validation
 library. It is separate from automatic model registry upload or production

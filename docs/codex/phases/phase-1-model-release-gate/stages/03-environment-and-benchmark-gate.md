@@ -12,6 +12,8 @@ Probe declared Python, OS, accelerator, driver, CUDA, TensorRT, and package
 requirements. Add bounded warm-up, latency, throughput, and peak-memory
 measurements for a declared workload.
 
-Exit: AC-07 through AC-09 pass for the declared matrix; other environments remain
-`not_verified`. Evidence is recorded for Windows CPU ONNX Runtime and the pinned
-TensorRT 10.8 container on the observed RTX 5050 host.
+Exit: AC-07 through AC-09 pass for the declared Windows CPU ONNX Runtime profile
+and bounded Python-allocation benchmark. Native process and GPU peak memory are
+not claimed. Optional preview evidence exists for the pinned TensorRT 10.8
+container on the observed RTX 5050 host; its missing GPU peak-memory observation
+remains `not_verified` independently of this CPU exit.

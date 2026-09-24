@@ -41,6 +41,15 @@
     },
     {
       "evidence": {
+        "sha256": "b8a52dc049b60e4b6ab68ad0df457362afab8b6304b2febdc1650a5dab4d7e7b",
+        "source": "https://download.pytorch.org/models/squeezenet1_1-b8a52dc0.pth"
+      },
+      "id": "model.source_pin",
+      "message": "public source identity and digest are declared; weight bytes are verified during export",
+      "status": "pass"
+    },
+    {
+      "evidence": {
         "count": 1
       },
       "id": "contract.inputs",
@@ -81,6 +90,15 @@
     },
     {
       "evidence": {
+        "input_sha256": "3161e1f639bd8c78b14164b87c3fb0be8aeb821aa715fcc0cab2d93353242d89",
+        "reference_output_sha256": "9b9e35c2d6a1191685178087ce91bd352fadcebc97af24cb7b88ecf75fec0f06"
+      },
+      "id": "fixture.binding",
+      "message": "fixture and reference output match pinned digests",
+      "status": "pass"
+    },
+    {
+      "evidence": {
         "compared_values": 1000,
         "max_absolute_error": 2.384185791015625e-06
       },
@@ -90,38 +108,64 @@
     },
     {
       "evidence": {
-        "latency_max_seconds": 0.0022554000024683774,
-        "latency_mean_seconds": 0.0015951199995470234,
-        "latency_median_seconds": 0.0014865999983157963,
-        "latency_min_seconds": 0.0013427000012598,
-        "latency_p95_seconds": 0.0021121800018590875,
+        "latency_max_seconds": 0.001430200005415827,
+        "latency_mean_seconds": 0.0013042599894106388,
+        "latency_median_seconds": 0.001284400001168251,
+        "latency_min_seconds": 0.00122669996926561,
+        "latency_p95_seconds": 0.0014063599985092879,
         "latency_seconds": [
-          0.0014865999983157963,
-          0.0022554000024683774,
-          0.001539299999421928,
-          0.0013427000012598,
-          0.001351599996269215
+          0.001430200005415827,
+          0.001310999970883131,
+          0.001284400001168251,
+          0.001269000000320375,
+          0.00122669996926561
         ],
         "measured_runs": 5,
-        "peak_bytes": 35623,
+        "peak_bytes": 34943,
         "peak_memory_scope": "python_tracemalloc",
-        "throughput_runs_per_second": 626.9120820276697,
+        "throughput_runs_per_second": 766.7182985900488,
         "warmup_runs": 1
       },
       "id": "benchmark.workload",
       "message": "benchmark workload completed",
       "status": "pass"
+    },
+    {
+      "evidence": {},
+      "id": "runtime.provenance",
+      "message": "package runner decoded pinned reference bytes and executed adapter on pinned fixture",
+      "status": "pass"
     }
   ],
   "evidence": {
     "fixture_sha256": "3161e1f639bd8c78b14164b87c3fb0be8aeb821aa715fcc0cab2d93353242d89",
-    "reference_output_sha256": "9b9e35c2d6a1191685178087ce91bd352fadcebc97af24cb7b88ecf75fec0f06"
+    "reference_output_sha256": "9b9e35c2d6a1191685178087ce91bd352fadcebc97af24cb7b88ecf75fec0f06",
+    "source_weight_sha256": "b8a52dc049b60e4b6ab68ad0df457362afab8b6304b2febdc1650a5dab4d7e7b"
   },
   "limitations": [
-    "TensorRT engine evidence is recorded in the separate pinned-container report; this report covers the CPU profile.",
-    "The benchmark peak memory scope is Python allocations only; native and GPU memory are covered by the TensorRT container report."
+    "This report covers only the declared ONNX Runtime CPU baseline; TensorRT is an independent optional preview and is not validated by a CPU pass.",
+    "The benchmark peak memory scope is Python allocations only; native process and GPU peak memory are not observed or claimed.",
+    "A passing runtime report does not itself establish committed-checkout AC-11 or authorize publication."
   ],
-  "manifest_digest": "7edba69f960c634785642371f657a680e700dafd234861cc440a8a0815860e3b",
+  "manifest_digest": "95187924e351a0817a37db70dac9f73770d200f8e84409b7c214f8178cd2451d",
   "schema_version": "1",
+  "scope": {
+    "environment": {
+      "machine": "AMD64",
+      "onnxruntime": "1.30.0",
+      "provider": "CPUExecutionProvider",
+      "python": "3.11.5",
+      "system": "Windows",
+      "torch": "2.14.0+cpu",
+      "torchvision": "0.29.0+cpu"
+    },
+    "runtime": {
+      "acceptance_role": "cpu_baseline",
+      "profile": "onnx-cpu-windows-py311",
+      "provider": "CPUExecutionProvider",
+      "reference": "torchvision",
+      "target": "onnxruntime"
+    }
+  },
   "status": "pass"
 }

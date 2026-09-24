@@ -166,6 +166,9 @@ class Manifest:
     tolerances: Mapping[str, float] = field(default_factory=dict)
     environment: Mapping[str, Any] = field(default_factory=dict)
     profiles: tuple[str, ...] = ()
+    fixture: Mapping[str, str] = field(default_factory=dict)
+    optimization_profiles: tuple[Mapping[str, Any], ...] = ()
+    source_sha256: str | None = None
 
     @classmethod
     def from_dict(cls, value: Mapping[str, Any]) -> "Manifest":
@@ -180,6 +183,9 @@ class Manifest:
         model_name = _required_string(model.get("name"), "model.name")
         model_version = _required_string(model.get("version"), "model.version")
         source = _required_string(model.get("source"), "model.source")
+        source_sha256 = model.get("source_sha256")
+        if source_sha256 is not None and (not isinstance(source_sha256, str) or len(source_sha256) != 64 or any(c not in "0123456789abcdef" for c in source_sha256)):
+            raise ManifestError("model.source_sha256 must be a 64-character lowercase SHA-256 digest")
         artifact_value = value.get("artifact")
         if not isinstance(artifact_value, Mapping):
             raise ManifestError("artifact must be an object")
@@ -210,6 +216,41 @@ class Manifest:
         profiles = tuple(profiles_value)
         if len(profiles) != len(set(profiles)):
             raise ManifestError("contract.profiles must be unique")
+        optimization_profiles_value = contract.get("optimization_profiles", [])
+        if not isinstance(optimization_profiles_value, list):
+            raise ManifestError("contract.optimization_profiles must be a list")
+        optimization_profiles: list[Mapping[str, Any]] = []
+        for profile_index, profile in enumerate(optimization_profiles_value):
+            if not isinstance(profile, Mapping) or set(profile) != {"index", "inputs"}:
+                raise ManifestError(f"contract.optimization_profiles[{profile_index}] requires index and inputs")
+            index, profile_inputs = profile["index"], profile["inputs"]
+            if isinstance(index, bool) or not isinstance(index, int) or index < 0 or not isinstance(profile_inputs, Mapping) or not profile_inputs:
+                raise ManifestError(f"contract.optimization_profiles[{profile_index}] has invalid index or inputs")
+            parsed_inputs: dict[str, Any] = {}
+            for input_name, bounds in profile_inputs.items():
+                if input_name not in {item.name for item in inputs} or not isinstance(bounds, Mapping) or set(bounds) != {"min", "opt", "max"}:
+                    raise ManifestError(f"contract.optimization_profiles[{profile_index}].inputs has invalid bounds")
+                triples = [bounds[key] for key in ("min", "opt", "max")]
+                if any(not isinstance(row, list) or len(row) != len(next(item.shape for item in inputs if item.name == input_name)) or any(isinstance(dim, bool) or not isinstance(dim, int) or dim <= 0 for dim in row) for row in triples):
+                    raise ManifestError(f"contract.optimization_profiles[{profile_index}].inputs.{input_name} has invalid dimensions")
+                if any(not (low <= mid <= high) for low, mid, high in zip(*triples)):
+                    raise ManifestError(f"contract.optimization_profiles[{profile_index}].inputs.{input_name} has unordered bounds")
+                declared_shape = next(item.shape for item in inputs if item.name == input_name)
+                if any(isinstance(want, int) and any(row[position] != want for row in triples) for position, want in enumerate(declared_shape)):
+                    raise ManifestError(f"contract.optimization_profiles[{profile_index}].inputs.{input_name} conflicts with fixed input shape")
+                parsed_inputs[input_name] = {key: list(bounds[key]) for key in ("min", "opt", "max")}
+            optimization_profiles.append({"index": index, "inputs": parsed_inputs})
+        if len({profile["index"] for profile in optimization_profiles}) != len(optimization_profiles):
+            raise ManifestError("contract.optimization_profiles indexes must be unique")
+        fixture_value = value.get("fixture", {})
+        if not isinstance(fixture_value, Mapping):
+            raise ManifestError("fixture must be an object")
+        if fixture_value:
+            if set(fixture_value) != {"input_sha256", "reference_output_sha256"}:
+                raise ManifestError("fixture requires input_sha256 and reference_output_sha256")
+            for key, digest in fixture_value.items():
+                if not isinstance(digest, str) or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
+                    raise ManifestError(f"fixture.{key} must be a 64-character lowercase SHA-256 digest")
         parsed_tolerances: dict[str, float] = {}
         for name, tolerance in tolerances.items():
             if not isinstance(name, str) or not name.strip():
@@ -219,17 +260,18 @@ class Manifest:
             if not math.isfinite(float(tolerance)):
                 raise ManifestError(f"tolerances.{name} must be finite")
             parsed_tolerances[str(name)] = float(tolerance)
-        return cls(schema, model_name, model_version, source, ArtifactSpec.from_dict(artifact_value), inputs, outputs, dict(runtime), parsed_tolerances, dict(environment), profiles)
+        return cls(schema, model_name, model_version, source, ArtifactSpec.from_dict(artifact_value), inputs, outputs, dict(runtime), parsed_tolerances, dict(environment), profiles, dict(fixture_value), tuple(optimization_profiles), source_sha256)
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "schema_version": self.schema_version,
-            "model": {"name": self.model_name, "version": self.model_version, "source": self.source},
+            "model": {"name": self.model_name, "version": self.model_version, "source": self.source, **({"source_sha256": self.source_sha256} if self.source_sha256 else {})},
             "artifact": self.artifact.to_dict(),
-            "contract": {"inputs": [item.to_dict() for item in self.inputs], "outputs": [item.to_dict() for item in self.outputs], **({"profiles": list(self.profiles)} if self.profiles else {})},
+            "contract": {"inputs": [item.to_dict() for item in self.inputs], "outputs": [item.to_dict() for item in self.outputs], **({"profiles": list(self.profiles)} if self.profiles else {}), **({"optimization_profiles": list(self.optimization_profiles)} if self.optimization_profiles else {})},
             "runtime": dict(self.runtime),
             "tolerances": dict(self.tolerances),
             "environment": dict(self.environment),
+            **({"fixture": dict(self.fixture)} if self.fixture else {}),
         }
 
 
@@ -252,6 +294,7 @@ class GateReport:
     checks: tuple[CheckResult, ...]
     limitations: tuple[str, ...] = ()
     schema_version: str = "1"
+    scope: Mapping[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -261,4 +304,5 @@ class GateReport:
             "artifact": dict(self.artifact),
             "checks": [check.to_dict() for check in self.checks],
             "limitations": list(self.limitations),
+            "scope": dict(self.scope),
         }

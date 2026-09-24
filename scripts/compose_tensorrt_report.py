@@ -29,6 +29,9 @@ def main() -> int:
     expected_fixture_sha256 = hashlib.sha256(args.reference.with_name("squeezenet11-fixture.npy").read_bytes()).hexdigest()
     if payload.get("fixture_sha256") != expected_fixture_sha256:
         raise SystemExit("TensorRT output fixture digest does not match the reference fixture")
+    engine_sha256 = hashlib.sha256(args.engine.read_bytes()).hexdigest()
+    if payload.get("engine_sha256") != engine_sha256:
+        raise SystemExit("TensorRT output engine digest does not match the declared engine")
     target = payload["outputs"]["output"]
     reference = np.load(args.reference, allow_pickle=False)
     runtime = payload["runtime"]
@@ -61,8 +64,17 @@ def main() -> int:
         reference_outputs=reference,
         target_outputs=target,
         benchmark_evidence=benchmark_evidence,
+        fixture_bytes=args.reference.with_name("squeezenet11-fixture.npy").read_bytes(),
+        reference_output_bytes=args.reference.read_bytes(),
     )
     report_data = report.to_dict()
+    report_data["limitations"] = [
+        "TensorRT is an independent optional preview for this declared GPU/platform; its missing evidence does not block CPU-only Phase 1 acceptance, and CPU success does not validate this profile.",
+        "The portable composer receives container output as supplied JSON; it cannot independently replay the adapter call, so runtime provenance remains not_verified despite the local observed run.",
+        "trtexec timings are device-only and do not include an observed peak GPU memory value; AC-09 is not verified for a TensorRT performance claim.",
+        "The pinned engine is an ignored local binary; a fresh checkout cannot verify this TensorRT decision without the exact pinned bytes.",
+        "The container digest in the runtime payload is launcher-supplied; host-side image digest inspection is a separate observation.",
+    ]
     report_data["evidence"] = {
         "fixture_sha256": expected_fixture_sha256,
         "reference_output_sha256": hashlib.sha256(args.reference.read_bytes()).hexdigest(),

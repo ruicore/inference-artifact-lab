@@ -2,10 +2,14 @@
 audience: codex
 document_role: environment_record
 phase_id: PH1
-status: local_pass
+status: optional_preview
 ---
 
 # TensorRT environment record
+
+This is independent optional preview evidence. No TensorRT platform or engine is
+required for CPU-only Phase 1 acceptance. This recorded platform is one evaluated
+sample; future GPU/container profiles can carry their own manifests and evidence.
 
 The project does not use any TensorRT executable, engine, or library from
 `private project directories` or another private project environment.
@@ -28,6 +32,9 @@ The first build command is prepared at
 and the generated public ONNX artifact into the container.
 
 Those observations are recorded in
-`reports/phase-1/squeezenet11-tensorrt.json`. The profile passes only for the
-pinned image digest and observed GPU/driver fingerprint; it does not claim
-general TensorRT or hardware compatibility.
+`reports/phase-1/squeezenet11-tensorrt.json`. Local load/contract/numerical checks
+passed for the pinned image digest and observed GPU/driver fingerprint. The
+portable report remains `not_verified` for runtime provenance and peak GPU memory;
+exact-engine fresh-checkout reproduction remains `blocked`. It does not claim
+general TensorRT or hardware compatibility, and a CPU pass changes none of these
+preview statuses.

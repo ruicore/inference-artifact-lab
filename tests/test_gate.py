@@ -23,6 +23,7 @@ def make_manifest(path, digest, size):
 
 def observed_contract():
     return {
+        "artifact_format": "fixture",
         "inputs": [{"name": "input", "dtype": "float32", "shape": [1, "features"]}],
         "outputs": [{"name": "output", "dtype": "float32", "shape": [1, 2]}],
     }
@@ -95,6 +96,41 @@ def test_observed_artifact_format_mismatch_fails(tmp_path):
     observed["artifact_format"] = "onnx"
     report = run_gate(manifest, observed_contract=observed, observed_environment={"test": "local"})
     assert next(check for check in report.checks if check.check_id == "artifact.format").status is GateStatus.FAIL
+
+
+def test_missing_observed_artifact_format_is_blocked(tmp_path):
+    artifact = tmp_path / "model.bin"
+    artifact.write_bytes(b"fixture")
+    manifest = make_manifest(artifact, hashlib.sha256(artifact.read_bytes()).hexdigest(), artifact.stat().st_size)
+    observed = observed_contract()
+    del observed["artifact_format"]
+    report = run_gate(manifest, observed_contract=observed, observed_environment={"test": "local"})
+    assert report.status is GateStatus.BLOCKED
+
+
+def test_engine_optimization_profile_bounds_mismatch_fails(tmp_path):
+    artifact = tmp_path / "model.bin"
+    artifact.write_bytes(b"fixture")
+    data = make_manifest(artifact, hashlib.sha256(artifact.read_bytes()).hexdigest(), artifact.stat().st_size).to_dict()
+    data["contract"]["optimization_profiles"] = [{"index": 0, "inputs": {"input": {"min": [1, 1], "opt": [1, 2], "max": [1, 4]}}}]
+    manifest = Manifest.from_dict(data)
+    observed = observed_contract()
+    observed["optimization_profiles"] = [{"index": 0, "inputs": {"input": {"min": [1, 1], "opt": [1, 2], "max": [1, 8]}}}]
+    report = run_gate(manifest, observed_contract=observed, observed_environment={"test": "local"})
+    assert report.status is GateStatus.FAIL
+    assert next(check for check in report.checks if check.check_id == "contract.optimization_profiles").status is GateStatus.FAIL
+
+
+@pytest.mark.parametrize("field,replacement", [("name", "different"), ("dtype", "float64"), ("shape", [1, 9])])
+def test_observed_input_contract_mismatch_fails(tmp_path, field, replacement):
+    artifact = tmp_path / "model.bin"
+    artifact.write_bytes(b"fixture")
+    manifest = make_manifest(artifact, hashlib.sha256(artifact.read_bytes()).hexdigest(), artifact.stat().st_size)
+    observed = observed_contract()
+    observed["inputs"][0][field] = replacement
+    report = run_gate(manifest, observed_contract=observed, observed_environment={"test": "local"})
+    assert report.status is GateStatus.FAIL
+    assert next(check for check in report.checks if check.check_id == "contract.inputs").status is GateStatus.FAIL
 
 
 def test_malformed_observed_environment_fails_without_crashing(tmp_path):

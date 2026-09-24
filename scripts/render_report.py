@@ -15,6 +15,8 @@ def render(report: dict) -> str:
         f"- Schema: `{report.get('schema_version', 'unknown')}`",
         f"- Manifest digest: `{report.get('manifest_digest')}`",
         f"- Artifact: `{report.get('artifact', {}).get('path', '')}`",
+        f"- Runtime profile: `{report.get('scope', {}).get('runtime', {}).get('profile', 'not_declared')}`",
+        f"- Acceptance role: `{report.get('scope', {}).get('runtime', {}).get('acceptance_role', 'not_declared')}`",
         "",
         "## Checks",
         "",

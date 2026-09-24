@@ -14,8 +14,10 @@ independent runtime equivalence, deterministic fixture execution, and bounded
 benchmark checks pass locally. The maximum absolute error observed was
 `2.384185791015625e-06`.
 
-The TensorRT profile is validated separately by the pinned-container report
+The optional TensorRT preview is recorded separately by the pinned-container report
 `reports/phase-1/squeezenet11-tensorrt.json`; this record remains scoped to the
 PyTorch-to-ONNX CPU path.
 
-Stage 02 is locally passed for both declared runtime correctness paths.
+Stage 02 passes for the CPU baseline. TensorRT's local numerical comparison is
+recorded, but portable AC-05 provenance remains `not_verified`; see the current
+[per-profile validation record](stage-04-validation.md).

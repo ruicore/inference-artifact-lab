@@ -12,7 +12,7 @@ dependencies = []
 model-release-gate = "inference_artifact_lab.__main__:main"
 
 [project.optional-dependencies]
-test = ["pytest>=8.0"]
+test = ["pytest>=8.0", "jsonschema>=4,<5"]
 runtime-cpu = ["numpy>=1.26", "onnxruntime==1.30.0"]
 
 [build-system]

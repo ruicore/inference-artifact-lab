@@ -11,7 +11,14 @@
     "artifact": {"type": "object", "required": ["path", "format", "sha256"], "properties": {"path": {"type": "string"}, "format": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}},
     "checks": {"type": "array", "items": {"type": "object", "required": ["id", "status", "message", "evidence"], "properties": {"id": {"type": "string"}, "status": {"enum": ["pass", "fail", "blocked", "not_verified"]}, "message": {"type": "string"}, "evidence": {"type": "object"}}}},
     "limitations": {"type": "array", "items": {"type": "string"}},
-    "evidence": {"type": "object"}
+    "evidence": {"type": "object"},
+    "scope": {
+      "type": "object",
+      "properties": {
+        "runtime": {"type": "object"},
+        "environment": {"type": "object"}
+      }
+    }
   },
   "additionalProperties": true
 }

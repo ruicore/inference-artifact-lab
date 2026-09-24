@@ -98,10 +98,24 @@ def _profiles_check(manifest: Manifest, observed_contract: Mapping[str, Any]) ->
     return CheckResult("contract.profiles", GateStatus.PASS, "artifact profiles match manifest", {"profiles": observed})
 
 
-def _format_check(manifest: Manifest, observed_contract: Mapping[str, Any]) -> CheckResult | None:
+def _optimization_profiles_check(manifest: Manifest, observed_contract: Mapping[str, Any]) -> CheckResult | None:
+    if not manifest.optimization_profiles:
+        return None
+    observed = observed_contract.get("optimization_profiles")
+    if observed is None:
+        return CheckResult("contract.optimization_profiles", GateStatus.BLOCKED, "engine optimization profile bounds are unavailable", {})
+    if not isinstance(observed, list):
+        return CheckResult("contract.optimization_profiles", GateStatus.FAIL, "engine optimization profiles must be a list", {})
+    expected = list(manifest.optimization_profiles)
+    if observed != expected:
+        return CheckResult("contract.optimization_profiles", GateStatus.FAIL, "engine optimization profile bounds do not match manifest", {"expected": expected, "observed": observed})
+    return CheckResult("contract.optimization_profiles", GateStatus.PASS, "engine optimization profile bounds match manifest", {"count": len(expected)})
+
+
+def _format_check(manifest: Manifest, observed_contract: Mapping[str, Any]) -> CheckResult:
     observed = observed_contract.get("artifact_format")
     if observed is None:
-        return None
+        return CheckResult("artifact.format", GateStatus.BLOCKED, "observed artifact format is unavailable", {})
     if observed != manifest.artifact.format:
         return CheckResult("artifact.format", GateStatus.FAIL, "observed artifact format does not match manifest", {"expected": manifest.artifact.format, "observed": observed})
     return CheckResult("artifact.format", GateStatus.PASS, "observed artifact format matches manifest", {"format": observed})
@@ -137,6 +151,8 @@ def run_gate(
     """
     path = Path(artifact_path) if artifact_path is not None else Path(manifest.artifact.path)
     checks = _integrity_checks(manifest, path)
+    if manifest.source_sha256:
+        checks.append(CheckResult("model.source_pin", GateStatus.PASS, "public source identity and digest are declared; weight bytes are verified during export", {"source": manifest.source, "sha256": manifest.source_sha256}))
     if observed_contract is None:
         observed_contract = {}
     elif not isinstance(observed_contract, Mapping):
@@ -145,11 +161,18 @@ def run_gate(
     profiles_check = _profiles_check(manifest, observed_contract)
     if profiles_check is not None:
         checks.append(profiles_check)
+    optimization_profiles_check = _optimization_profiles_check(manifest, observed_contract)
+    if optimization_profiles_check is not None:
+        checks.append(optimization_profiles_check)
     format_check = _format_check(manifest, observed_contract)
-    if format_check is not None:
-        checks.append(format_check)
+    checks.append(format_check)
     checks.append(_environment_check(manifest, observed_environment))
-    return GateReport(_aggregate(checks), canonical_manifest_digest(manifest), {**manifest.artifact.to_dict(), "path": str(path)}, tuple(checks), ("Runtime numerical equivalence and benchmarks are not implemented by the core gate.",))
+    return GateReport(
+        _aggregate(checks), canonical_manifest_digest(manifest),
+        {**manifest.artifact.to_dict(), "path": str(path)}, tuple(checks),
+        ("Runtime numerical equivalence and benchmarks are not implemented by the core gate.",),
+        scope={"runtime": dict(manifest.runtime), "environment": dict(manifest.environment)},
+    )
 
 
 def run_gate_from_file(manifest_path: str | Path, artifact_path: str | Path | None = None, **kwargs: Any) -> GateReport:

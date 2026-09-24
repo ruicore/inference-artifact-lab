@@ -1,9 +1,11 @@
 # Model Release Gate report
 
-- Status: **pass**
+- Status: **not_verified**
 - Schema: `1`
-- Manifest digest: `e5a33c0b09061afb6c54001008d97fa93f3ada9496c8337e4a720bed0dcf9dbe`
+- Manifest digest: `63c04235b47b3408832e0554fcf4fef48a8c00ba7bd1a70205d6804c24d0ea74`
 - Artifact: `artifacts\squeezenet1.1-fp32.engine`
+- Runtime profile: `tensorrt-gpu`
+- Acceptance role: `optional_preview`
 
 ## Checks
 
@@ -12,16 +14,24 @@
 | `artifact.exists` | **pass** | artifact file exists |
 | `artifact.size` | **pass** | artifact size matches manifest |
 | `artifact.sha256` | **pass** | artifact SHA-256 matches manifest |
+| `model.source_pin` | **pass** | public source identity and digest are declared; weight bytes are verified during export |
 | `contract.inputs` | **pass** | artifact inputs match manifest |
 | `contract.outputs` | **pass** | artifact outputs match manifest |
+| `contract.optimization_profiles` | **pass** | engine optimization profile bounds match manifest |
 | `artifact.format` | **pass** | observed artifact format matches manifest |
 | `environment.compatibility` | **pass** | observed environment satisfies manifest |
+| `fixture.binding` | **pass** | fixture and reference output match pinned digests |
 | `runtime.equivalence` | **pass** | target output is within declared tolerance |
-| `benchmark.workload` | **pass** | benchmark workload evidence supplied by the declared runtime harness |
+| `benchmark.workload` | **not_verified** | peak memory is not observed for the declared benchmark scope |
+| `runtime.provenance` | **not_verified** | supplied runtime observations are not independently bound to fixture and reference bytes |
 
 ## Limitations
 
-- None recorded.
+- TensorRT is an independent optional preview for this declared GPU/platform; its missing evidence does not block CPU-only Phase 1 acceptance, and CPU success does not validate this profile.
+- The portable composer receives container output as supplied JSON; it cannot independently replay the adapter call, so runtime provenance remains not_verified despite the local observed run.
+- trtexec timings are device-only and do not include an observed peak GPU memory value; AC-09 is not verified for a TensorRT performance claim.
+- The pinned engine is an ignored local binary; a fresh checkout cannot verify this TensorRT decision without the exact pinned bytes.
+- The container digest in the runtime payload is launcher-supplied; host-side image digest inspection is a separate observation.
 
 ## Evidence
 

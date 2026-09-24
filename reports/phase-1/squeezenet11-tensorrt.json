@@ -43,6 +43,15 @@
     },
     {
       "evidence": {
+        "sha256": "b8a52dc049b60e4b6ab68ad0df457362afab8b6304b2febdc1650a5dab4d7e7b",
+        "source": "https://download.pytorch.org/models/squeezenet1_1-b8a52dc0.pth"
+      },
+      "id": "model.source_pin",
+      "message": "public source identity and digest are declared; weight bytes are verified during export",
+      "status": "pass"
+    },
+    {
+      "evidence": {
         "count": 1
       },
       "id": "contract.inputs",
@@ -55,6 +64,14 @@
       },
       "id": "contract.outputs",
       "message": "artifact outputs match manifest",
+      "status": "pass"
+    },
+    {
+      "evidence": {
+        "count": 1
+      },
+      "id": "contract.optimization_profiles",
+      "message": "engine optimization profile bounds match manifest",
       "status": "pass"
     },
     {
@@ -81,6 +98,15 @@
     },
     {
       "evidence": {
+        "input_sha256": "3161e1f639bd8c78b14164b87c3fb0be8aeb821aa715fcc0cab2d93353242d89",
+        "reference_output_sha256": "9b9e35c2d6a1191685178087ce91bd352fadcebc97af24cb7b88ecf75fec0f06"
+      },
+      "id": "fixture.binding",
+      "message": "fixture and reference output match pinned digests",
+      "status": "pass"
+    },
+    {
+      "evidence": {
         "compared_values": 1000,
         "max_absolute_error": 2.86102294921875e-06
       },
@@ -90,19 +116,25 @@
     },
     {
       "evidence": {
-        "latency_mean_seconds": 0.00035659499999999997,
-        "latency_median_seconds": 0.000324608,
-        "latency_p95_seconds": 0.000524353,
+        "latency_mean_seconds": 0.000413791,
+        "latency_median_seconds": 0.00035334,
+        "latency_p95_seconds": 0.000774902,
         "measured_runs": 100,
         "memory_scope": "not_peak; trtexec benchmark log does not expose process peak GPU memory",
         "source": "trtexec",
-        "throughput_runs_per_second": 2795.71,
+        "throughput_runs_per_second": 2392.98,
         "transfer_scope": "device_only",
         "warmup_duration_ms": 200
       },
       "id": "benchmark.workload",
-      "message": "benchmark workload evidence supplied by the declared runtime harness",
-      "status": "pass"
+      "message": "peak memory is not observed for the declared benchmark scope",
+      "status": "not_verified"
+    },
+    {
+      "evidence": {},
+      "id": "runtime.provenance",
+      "message": "supplied runtime observations are not independently bound to fixture and reference bytes",
+      "status": "not_verified"
     }
   ],
   "evidence": {
@@ -144,8 +176,31 @@
     "fixture_sha256": "3161e1f639bd8c78b14164b87c3fb0be8aeb821aa715fcc0cab2d93353242d89",
     "reference_output_sha256": "9b9e35c2d6a1191685178087ce91bd352fadcebc97af24cb7b88ecf75fec0f06"
   },
-  "limitations": [],
-  "manifest_digest": "e5a33c0b09061afb6c54001008d97fa93f3ada9496c8337e4a720bed0dcf9dbe",
+  "limitations": [
+    "TensorRT is an independent optional preview for this declared GPU/platform; its missing evidence does not block CPU-only Phase 1 acceptance, and CPU success does not validate this profile.",
+    "The portable composer receives container output as supplied JSON; it cannot independently replay the adapter call, so runtime provenance remains not_verified despite the local observed run.",
+    "trtexec timings are device-only and do not include an observed peak GPU memory value; AC-09 is not verified for a TensorRT performance claim.",
+    "The pinned engine is an ignored local binary; a fresh checkout cannot verify this TensorRT decision without the exact pinned bytes.",
+    "The container digest in the runtime payload is launcher-supplied; host-side image digest inspection is a separate observation."
+  ],
+  "manifest_digest": "63c04235b47b3408832e0554fcf4fef48a8c00ba7bd1a70205d6804c24d0ea74",
   "schema_version": "1",
-  "status": "pass"
+  "scope": {
+    "environment": {
+      "compute_capability": "12.0",
+      "container_digest": "sha256:814325e2b8a653f354c30bbcf5ecc8d4c780cf878a88a320ae648fbfdd9dd82d",
+      "cuda_driver": "595.79",
+      "gpu_name": "NVIDIA GeForce RTX 5050",
+      "tensorrt": "10.8.0"
+    },
+    "runtime": {
+      "acceptance_role": "optional_preview",
+      "precision": "fp32",
+      "profile": "tensorrt-gpu",
+      "reference": "torchvision",
+      "target": "tensorrt",
+      "transfer_scope": "device_only"
+    }
+  },
+  "status": "not_verified"
 }

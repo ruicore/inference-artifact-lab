@@ -35,6 +35,11 @@ def test_manifest_rejects_unknown_artifact_format():
         Manifest.from_dict(_manifest(artifact={"path": "m", "format": "pickle", "sha256": "0" * 64}))
 
 
+def test_manifest_rejects_invalid_public_source_digest():
+    with pytest.raises(ManifestError, match="source_sha256"):
+        Manifest.from_dict(_manifest(model={"name": "fixture", "version": "1", "source": "public", "source_sha256": "not-a-digest"}))
+
+
 def test_manifest_rejects_unknown_dtype_and_malformed_tensor_entry():
     with pytest.raises(ManifestError, match="dtype"):
         Manifest.from_dict(_manifest(contract={"inputs": [{"name": "x", "dtype": "made-up", "shape": [1]}], "outputs": [{"name": "y", "dtype": "float32", "shape": [1]}]}))

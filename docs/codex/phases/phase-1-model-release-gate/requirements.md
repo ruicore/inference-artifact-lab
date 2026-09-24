@@ -13,11 +13,11 @@ one requirement and an acceptance case.
 
 | ID | Requirement | Stage |
 |---|---|---|
-| PH1-R01 | Record source, artifact, format, build inputs, size, and digest | 01 |
+| PH1-R01 | Pin public source URL and weight digest in the manifest; verify source bytes at export and record artifact, format, build inputs, size, and digest | 01 |
 | PH1-R02 | Parse and version a complete artifact manifest | 01 |
 | PH1-R03 | Reject artifact/manifest identity, shape, dtype, or profile mismatches | 01 |
-| PH1-R04 | Compare reference and target runtime outputs under declared tolerances | 02 |
-| PH1-R05 | Verify declared environment requirements and fail fast on incompatibility | 03 |
+| PH1-R04 | Pin fixture/reference-output bytes and compare reference and target runtime outputs under declared tolerances | 02 |
+| PH1-R05 | Probe declared environment requirements and fail fast on incompatibility before adapter execution | 03 |
 | PH1-R06 | Measure declared workload latency, throughput, warm-up, and peak memory | 03 |
 | PH1-R07 | Produce versioned JSON and human-readable release reports | 04 |
 | PH1-R08 | Reproduce verification in a clean declared environment | 04 |
@@ -25,11 +25,15 @@ one requirement and an acceptance case.
 ## Baseline constraints
 
 The first implementation uses one pinned public non-robotics PyTorch model, a
-generated deterministic fixture, ONNX as interchange artifact, and TensorRT as
-compiled deployment artifact. The reference path is torchvision/PyTorch CPU;
-target paths are ONNX Runtime CPU and TensorRT when the declared environment is
-available. Exact revisions and environment fingerprints belong to evidence records,
-not to the general product contract.
+generated deterministic fixture, and ONNX as the required interchange artifact.
+The reference path is torchvision/PyTorch CPU; the first acceptance target is
+`onnx-cpu-windows-py311`, the declared ONNX Runtime CPU environment. TensorRT is
+an independent optional preview, with platform-specific engine and environment
+evidence. No TensorRT environment or exact engine is required to close the CPU
+baseline. Exact revisions and environment fingerprints belong to evidence records,
+not to the general product contract. PH1-R06 / AC-09 apply to the explicitly
+declared CPU benchmark scope; Python allocation peaks are not native process or
+GPU peak-memory measurements.
 
 ## Requirement change rule
 

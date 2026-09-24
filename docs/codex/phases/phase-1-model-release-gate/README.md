@@ -7,7 +7,8 @@ status: implementation_in_progress
 
 # Phase 1 - Model Release Gate
 
-Phase 1 is the complete current product baseline. It is delivered through five
+Phase 1's first acceptance baseline is the declared ONNX Runtime CPU profile.
+TensorRT is an independent optional preview. Phase 1 is delivered through five
 internal stages; the stages control delivery order and evidence collection, not
 separate products.
 
@@ -22,5 +23,7 @@ separate products.
 - [Stage 04 - reproducible delivery](stages/04-reproducible-delivery.md)
 - [Validation record](stage-04-validation.md)
 
-Current lifecycle: development preview. Runtime smoke evidence exists; full
-acceptance remains open. See [publication review](../../../publication-review.md).
+Current lifecycle: CPU acceptance candidate, awaiting committed-checkout AC-11.
+TensorRT provenance/performance remain `not_verified` and clean-checkout
+reproduction remains `blocked`; these preview gaps do not block CPU acceptance.
+See [publication review](../../../publication-review.md).

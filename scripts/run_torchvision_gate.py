@@ -16,7 +16,7 @@ from torchvision.models import SqueezeNet1_1_Weights, squeezenet1_1
 
 from inference_artifact_lab import load_manifest
 from inference_artifact_lab.adapters import OnnxRuntimeAdapter
-from inference_artifact_lab.release import run_release_gate
+from inference_artifact_lab.release import run_bound_adapter_gate
 
 
 def main() -> int:
@@ -27,7 +27,14 @@ def main() -> int:
     args = parser.parse_args()
 
     manifest = load_manifest(args.manifest)
+    weights = SqueezeNet1_1_Weights.IMAGENET1K_V1
+    cache_file = Path(torch.hub.get_dir()) / "checkpoints" / Path(weights.url).name
+    if manifest.source != weights.url or not manifest.source_sha256:
+        raise SystemExit("manifest does not pin the selected public weights")
     reference_model = squeezenet1_1(weights=SqueezeNet1_1_Weights.DEFAULT).eval()
+    observed_weight_sha256 = hashlib.sha256(cache_file.read_bytes()).hexdigest()
+    if observed_weight_sha256 != manifest.source_sha256:
+        raise SystemExit("public source weight bytes do not match manifest")
     generator = torch.Generator().manual_seed(20260920)
     tensor = torch.rand((1, 3, 224, 224), generator=generator)
     with torch.no_grad():
@@ -43,7 +50,6 @@ def main() -> int:
     np.save(reference_path, reference)
 
     adapter = OnnxRuntimeAdapter(args.artifact, providers=["CPUExecutionProvider"])
-    target = adapter.run({"data": tensor.numpy()})["output"]
     environment = {
         "python": platform.python_version(),
         "system": platform.system(),
@@ -53,25 +59,22 @@ def main() -> int:
         "onnxruntime": __import__("onnxruntime").__version__,
         "provider": "CPUExecutionProvider",
     }
-    report = run_release_gate(
-        manifest,
-        args.artifact,
-        observed_contract=adapter.contract(),
-        observed_environment=environment,
-        reference_outputs=reference,
-        target_outputs=target,
-        benchmark_call=lambda: adapter.run({"data": tensor.numpy()}),
+    report = run_bound_adapter_gate(
+        manifest, args.artifact, adapter=adapter, fixture_path=fixture_path,
+        reference_output_path=reference_path, observed_environment=environment,
     )
     report = replace(
         report,
         limitations=(
-            "TensorRT engine evidence is recorded in the separate pinned-container report; this report covers the CPU profile.",
-            "The benchmark peak memory scope is Python allocations only; native and GPU memory are covered by the TensorRT container report.",
+            "This report covers only the declared ONNX Runtime CPU baseline; TensorRT is an independent optional preview and is not validated by a CPU pass.",
+            "The benchmark peak memory scope is Python allocations only; native process and GPU peak memory are not observed or claimed.",
+            "A passing runtime report does not itself establish committed-checkout AC-11 or authorize publication.",
         ),
     )
     args.report.parent.mkdir(parents=True, exist_ok=True)
     report_data = report.to_dict()
     report_data["evidence"] = {
+        "source_weight_sha256": observed_weight_sha256,
         "fixture_sha256": hashlib.sha256(fixture_path.read_bytes()).hexdigest(),
         "reference_output_sha256": hashlib.sha256(reference_path.read_bytes()).hexdigest(),
     }

@@ -143,6 +143,7 @@ def test_tensorrt_contract_and_profile_are_observable(tmp_path):
         "artifact_format": "tensorrt-engine",
         "inputs": [{"name": "data", "dtype": "tensor(float)", "shape": [None, 3]}],
         "outputs": [{"name": "out", "dtype": "tensor(float)", "shape": [None, 1]}],
+        "optimization_profiles": [{"index": 0, "inputs": {"data": {"min": [1, 3], "opt": [2, 3], "max": [4, 3]}}}],
     }
     assert adapter.optimization_profiles()[0]["inputs"]["data"]["max"] == [4, 3]
     assert adapter.runtime_info()["cuda_binding"] == "test-cuda"
