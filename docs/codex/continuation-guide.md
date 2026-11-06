@@ -13,9 +13,10 @@ runtime, and environment have enough evidence for a scoped release decision.
 
 ## Before adding a capability
 
-The currently selected increment is [Phase 2 model lifecycle planning](phases/phase-2-model-lifecycle/README.md).
-Start with its requirements, acceptance matrix, and experiment plan. Phase 1 CPU
-acceptance is the preserved baseline; Phase 2 has no implementation or run evidence.
+The currently selected increment is [Phase 2 model lifecycle experiments](phases/phase-2-model-lifecycle/README.md).
+Start with its requirements, acceptance matrix, experiment plan and validation
+record. Phase 1 CPU acceptance remains its own preserved baseline. A raw lifecycle
+invocation intentionally cannot certify external unit-test or checkout evidence.
 
 Answer these questions in order:
 

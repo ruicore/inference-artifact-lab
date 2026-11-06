@@ -16,7 +16,8 @@ release decision.
 
 The selected next increment is the offline [model lifecycle experiment](phases/phase-2-model-lifecycle/README.md).
 It evaluates artifact identity and runtime-resource behavior under declared
-load/use/release sequences. It is planned, not implemented or validated.
+load/use/release sequences. Its [validation record](phases/phase-2-model-lifecycle/validation.md)
+separates deterministic tests, real CPU observations and clean-checkout evidence.
 
 ## Product-owned entities
 

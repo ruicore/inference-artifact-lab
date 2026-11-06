@@ -3,14 +3,14 @@ audience: codex
 document_role: acceptance_contract
 phase_id: PH2
 authority: normative
-status: not_run
+status: evidence_recorded_separately
 ---
 
 # Phase 2 acceptance matrix
 
-All rows are currently `not_run`. Codes below define future checks, not results.
-Each required row needs its own recorded evidence; unit tests do not substitute
-for the real-runtime and clean-checkout rows.
+Codes below define the checks; the [validation record](validation.md) owns current
+results and evidence. Each required row needs its own recorded evidence; unit
+tests do not substitute for the real-runtime and clean-checkout rows.
 
 | Case | Requirement | Scenario and required evidence |
 |---|---|---|

@@ -3,7 +3,7 @@ audience: codex
 document_role: requirements
 phase_id: PH2
 authority: normative
-status: planned
+status: active
 ---
 
 # Phase 2 requirements

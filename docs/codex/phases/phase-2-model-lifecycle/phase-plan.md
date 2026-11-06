@@ -3,7 +3,7 @@ audience: codex
 document_role: phase_plan
 phase_id: PH2
 authority: delivery
-status: planning
+status: implemented_pending_clean_reproduction
 ---
 
 # Experiment and delivery plan
@@ -98,8 +98,8 @@ server-capacity promise, or claim native memory leaks from RSS growth alone.
 | 03 - Measurement and report | Add RSS collection, cold/warm/reload schedule, JSON schema and renderer | AC09-AC10 with unavailable observations explicit |
 | 04 - Reproduction and review | Fresh committed-checkout reproduction, regression/disclosure review and limitation record | AC11 and all required rows; publication tracked separately |
 
-All stages are currently planned. Do not create successful validation records
-until the checks actually run. Preserve Phase 1's historical records. A useful
+Implementation is present; the [validation record](validation.md) owns the current
+stage evidence and clean-reproduction status. Preserve Phase 1's historical records. A useful
 result may show that retention improves load latency while RSS stays elevated;
 the project must report that result without inventing a memory-reclamation win.
 

@@ -10,7 +10,7 @@ Read documents in this order:
 
 1. [Product contract](product-contract.md)
 2. [Product phases](phases/README.md)
-3. [Selected Phase 2 planning](phases/phase-2-model-lifecycle/README.md)
+3. [Phase 2 implementation and evidence](phases/phase-2-model-lifecycle/README.md)
 4. Phase 2 [requirements](phases/phase-2-model-lifecycle/requirements.md)
 5. Phase 2 [acceptance contract](phases/phase-2-model-lifecycle/acceptance.md)
 6. Phase 2 [experiment and delivery plan](phases/phase-2-model-lifecycle/phase-plan.md)
