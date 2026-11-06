@@ -29,7 +29,7 @@ The selected next increment is the [Model Lifecycle Experiment](docs/codex/phase
 now implements compatible instance sharing, artifact revision changes, active-use
 protection, bounded retention, and separately observed process memory on CPU.
 See its [validation record](docs/codex/phases/phase-2-model-lifecycle/validation.md)
-for executed checks and remaining reproduction work. The raw invocation report
+for the local CPU acceptance and independent committed-checkout reproduction. The raw invocation report
 retains `not_verified` for acceptance that needs external test/checkout evidence.
 
 ## Phase 1 flow

@@ -2,13 +2,14 @@
 audience: codex
 document_role: phase_index
 phase_id: PH2
-status: implemented_pending_clean_reproduction
+status: cpu_complete_locally
 ---
 
 # Phase 2 - Model Lifecycle Experiment
 
-Selected and implemented: 2026-11-06. Clean committed reproduction is pending;
-current evidence is recorded separately below.
+Selected, implemented and locally accepted: 2026-11-06. Independent committed
+reproduction passed for code revision `18cfcea`; evidence sources are recorded
+separately below. Publication remains separate.
 
 ## Public problem
 

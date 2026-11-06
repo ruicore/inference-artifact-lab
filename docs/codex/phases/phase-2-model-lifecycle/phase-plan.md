@@ -3,7 +3,7 @@ audience: codex
 document_role: phase_plan
 phase_id: PH2
 authority: delivery
-status: implemented_pending_clean_reproduction
+status: cpu_complete_locally
 ---
 
 # Experiment and delivery plan
