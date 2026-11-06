@@ -13,6 +13,10 @@ runtime, and environment have enough evidence for a scoped release decision.
 
 ## Before adding a capability
 
+The currently selected increment is [Phase 2 model lifecycle planning](phases/phase-2-model-lifecycle/README.md).
+Start with its requirements, acceptance matrix, and experiment plan. Phase 1 CPU
+acceptance is the preserved baseline; Phase 2 has no implementation or run evidence.
+
 Answer these questions in order:
 
 1. Does the capability validate artifact identity, contract, runtime behavior,

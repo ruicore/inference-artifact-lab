@@ -5,7 +5,7 @@ authority: normative
 status: active
 ---
 
-# Model Release Gate product contract
+# Inference Artifact Lab product contract
 
 ## Product boundary
 
@@ -13,6 +13,10 @@ Inference Artifact Lab validates whether a declared machine-learning deployment
 artifact is complete, contract-compatible, behaviorally equivalent to a reference
 path, and usable in a declared environment. It produces reviewable evidence for a
 release decision.
+
+The selected next increment is the offline [model lifecycle experiment](phases/phase-2-model-lifecycle/README.md).
+It evaluates artifact identity and runtime-resource behavior under declared
+load/use/release sequences. It is planned, not implemented or validated.
 
 ## Product-owned entities
 
@@ -67,6 +71,21 @@ these values participate in the canonical manifest digest. Reports carry the
 manifest's declared `runtime` and `environment` in an additive `scope` object,
 including failed and blocked decisions. This is declaration metadata, not proof
 that the environment was observed. Environment checks retain the actual evidence.
+
+## Phase 2 boundary
+
+Phase 2 owns a bounded local experiment runner, runtime-instance identity,
+compatible sharing, explicit use ownership, idle eviction, and evidence collection.
+The first profile is ONNX Runtime CPU. It combines artifact integrity, runtime
+correctness, resource ownership, and reproducible measurement in this repository.
+It does not add a network service, production scheduler, training, automatic
+hardware discovery, distributed model pool, or live deployment controller.
+
+New lifecycle evidence must identify the exact artifact bytes, effective load
+options, operation sequence, implementation revision, fixture, and environment.
+Logical release and observed process memory are separate facts. A bounded
+resident-instance count is not a native-memory or GPU-memory ceiling.
+Phase 1 reports and their existing validation boundary remain unchanged.
 
 ## Compatibility and status
 

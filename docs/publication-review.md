@@ -106,3 +106,38 @@ The reviewed claim remains limited to the declared ONNX CPU environment and
 public model. TensorRT is an optional platform-specific preview with the gaps
 listed above. Pushing source and reports does not publish a package, tag, or
 case study and does not certify production use.
+
+## 2026-11-06 pre-push review of lifecycle planning and repository guidance
+
+The user authorized review and push of the complete pending documentation
+changes, including the existing `AGENTS.md` style-guide addition. The reviewed
+baseline is public `main` at `227d009`. The existing remote is public and
+advertises only `main`, with no advertised tags or pull refs.
+
+- The pending product changes describe an independently designed offline model
+  lifecycle experiment using generated ONNX fixtures and the existing pinned
+  public model. Phase 2 remains planning only: no implementation, measurement,
+  acceptance pass, or memory-reclamation result is asserted.
+- The repository guidance addition is generic engineering style text with a
+  public upstream reference and included license notice. It contains no private
+  project examples, local paths, credentials, or private service addresses.
+- Before this review record was added, all ten pending files passed
+  `detect-secrets` 1.5.0 with credential network verification disabled and no
+  suppression baseline. The final candidate, including this record, is scanned
+  again before commit.
+- All 19 commits and 202 unique blobs reachable locally from the baseline
+  received a targeted scan for known private identifiers, paths, internal
+  addresses, credential prefixes, and private portfolio context. No matches
+  were found. Candidate URL hosts were public GitHub, ONNX Runtime, and Python
+  package documentation/distribution hosts. The final candidate is also checked
+  for credential-bearing or signed URLs.
+- Semantic disclosure review found no private source code, incident context,
+  work-derived measurements, raw conversations, or private evidence in the
+  public planning documents. Instance limits and measurement schedules are
+  synthetic experiment settings, not copied service targets.
+- Documentation links, requirement/acceptance mapping, and diff whitespace
+  checks pass. Runtime tests and model experiments are not rerun for these
+  documentation-only changes; prior Phase 1 results remain dated and scoped.
+
+These checks support this source/documentation push. They do not establish
+Phase 2 runtime behavior, universal secret detection, or a new package release.

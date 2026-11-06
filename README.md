@@ -23,7 +23,14 @@ engine clean-checkout reproduction is `blocked`. These preview gaps do not block
 CPU-only acceptance; CPU success does not validate TensorRT. See the separate
 CPU and preview rows in the [validation record](docs/codex/phases/phase-1-model-release-gate/stage-04-validation.md).
 
-## Planned flow
+## Selected next experiment
+
+The selected next increment is the [Model Lifecycle Experiment](docs/codex/phases/phase-2-model-lifecycle/README.md),
+currently planning only. It will evaluate compatible instance sharing, artifact
+revision changes, active-use protection, bounded retention, and separately
+observed process memory on CPU. No lifecycle benchmark results are available yet.
+
+## Phase 1 flow
 
 ```text
 public model
